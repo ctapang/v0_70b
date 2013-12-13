@@ -1,0 +1,20 @@
+#
+# Generated - do not edit!
+#
+# NOCDDL
+#
+CND_BASEDIR=`pwd`
+# pic32mxusbsk_pictaillcc_wqvga configuration
+CND_ARTIFACT_DIR_pic32mxusbsk_pictaillcc_wqvga=dist/pic32mxusbsk_pictaillcc_wqvga/production
+CND_ARTIFACT_NAME_pic32mxusbsk_pictaillcc_wqvga=lcc.X.production.hex
+CND_ARTIFACT_PATH_pic32mxusbsk_pictaillcc_wqvga=dist/pic32mxusbsk_pictaillcc_wqvga/production/lcc.X.production.hex
+CND_PACKAGE_DIR_pic32mxusbsk_pictaillcc_wqvga=${CND_DISTDIR}/pic32mxusbsk_pictaillcc_wqvga/package
+CND_PACKAGE_NAME_pic32mxusbsk_pictaillcc_wqvga=lcc.x.tar
+CND_PACKAGE_PATH_pic32mxusbsk_pictaillcc_wqvga=${CND_DISTDIR}/pic32mxusbsk_pictaillcc_wqvga/package/lcc.x.tar
+# pic32mzsk_meb2_wqvga configuration
+CND_ARTIFACT_DIR_pic32mzsk_meb2_wqvga=dist/pic32mzsk_meb2_wqvga/production
+CND_ARTIFACT_NAME_pic32mzsk_meb2_wqvga=lcc.X.production.hex
+CND_ARTIFACT_PATH_pic32mzsk_meb2_wqvga=dist/pic32mzsk_meb2_wqvga/production/lcc.X.production.hex
+CND_PACKAGE_DIR_pic32mzsk_meb2_wqvga=${CND_DISTDIR}/pic32mzsk_meb2_wqvga/package
+CND_PACKAGE_NAME_pic32mzsk_meb2_wqvga=lcc.x.tar
+CND_PACKAGE_PATH_pic32mzsk_meb2_wqvga=${CND_DISTDIR}/pic32mzsk_meb2_wqvga/package/lcc.x.tar

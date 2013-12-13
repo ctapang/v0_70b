@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE module SYSTEM "ispmodule.dtd">
+
+<module name="system">
+	<component name="clk">
+		<includes>
+			<include logicalpath="framework/system/clk" name="framework/system/system.h"/>
+			<include logicalpath="framework/system/clk" name="framework/system/clk/sys_clk.h"/>
+            <include logicalpath="framework/system/clk" name="framework/system/clk/sys_clk_mapping.h"/>
+			<include logicalpath="framework/system/clk/src" name="framework/system/clk/src/sys_clk_internal.h"/>
+            <include logicalpath="framework/system/clk/src" name="framework/system/clk/src/sys_clk_local.h"/>
+            <include logicalpath="framework/system/clk/src" name="framework/system/clk/src/sys_clk_lookup_pic32.h"/>
+            <include logicalpath="framework/system/clk/src" name="framework/system/clk/src/sys_clk_variant_mapping.h"/>
+		</includes>
+		<files>
+			<file logicalpath="framework/system/clk/src" name="framework/system/clk/src/sys_clk.c"/>
+            <file logicalpath="framework/system/clk/src" name="framework/system/clk/src/sys_clk_pic32.c"/>
+		</files>
+		<paths>
+			<path name="framework/system/"/>
+        </paths>
+	</component>
+	
+	<component name="common">
+		<includes>
+			<include logicalpath="framework/system/common" name="framework/system/system.h"/>
+			<include logicalpath="framework/system/common" name="framework/system/common/sys_buffer.h"/>
+            <include logicalpath="framework/system/common" name="framework/system/common/sys_common.h"/>
+            <include logicalpath="framework/system/common" name="framework/system/common/sys_module.h"/>
+            <include logicalpath="framework/system/common" name="framework/system/common/sys_queue.h"/>
+		</includes>
+		<files>
+			<file logicalpath="framework/system/common" name="framework/system/common/sys_buffer.c"/>
+			<file logicalpath="framework/system/common" name="framework/system/common/sys_queue.c"/>
+		</files>
+		<paths>
+			<path name="framework/system/"/>
+        </paths>
+	</component>
+	
+	<component name="devcon">
+		<includes>
+			<include logicalpath="framework/system/devcon" name="framework/system/system.h"/>
+			<include logicalpath="framework/system/devcon" name="framework/system/devcon/sys_devcon.h"/>
+            <include logicalpath="framework/system/devcon/config" name="framework/system/devcon/config/sys_devcon_config.h"/>
+            <include logicalpath="framework/system/devcon/config" name="framework/system/devcon/config/sys_devcon_config_template.h"/>
+            <include logicalpath="framework/system/devcon/src" name="framework/system/devcon/src/sys_devcon_local.h"/>
+		</includes>
+		<files>
+			<file logicalpath="framework/system/devcon/src" name="framework/system/devcon/src/sys_devcon.c"/>
+		</files>
+		<paths>
+			<path name="framework/system/"/>
+        </paths>
+	</component>
+	
+	
+	<component name="fs">
+		<includes>
+			<include logicalpath="framework/system/fs" name="framework/system/system.h"/>
+			<include logicalpath="framework/system/fs" name="framework/system/fs/sys_fs.h"/>
+            <include logicalpath="framework/system/fs" name="framework/system/fs/sys_fs_media_manager.h"/>
+            <include logicalpath="framework/system/fs/fat_fs/src/file_system" name="framework/system/fs/fat_fs/src/file_system/ff.h"/>
+            <include logicalpath="framework/system/fs/fat_fs/src/file_system" name="framework/system/fs/fat_fs/src/file_system/ffconf.h"/>
+			<include logicalpath="framework/system/fs/mpfs" name="framework/system/fs/mpfs/mpfs.h"/>
+			<include logicalpath="framework/system/fs/mpfs/src" name="framework/system/fs/mpfs/src/mpfs_local.h"/>
+            <include logicalpath="framework/system/fs/fat_fs/src/hardware_access" name="framework/system/fs/fat_fs/src/hardware_access/diskio.h"/>
+            <include logicalpath="framework/system/fs/src" name="framework/system/fs/src/sys_fs_local.h"/>
+            <include logicalpath="framework/system/fs/src" name="framework/system/fs/src/sys_fs_media_manager_local.h"/>
+		</includes>
+		<files>
+			<file logicalpath="framework/system/fs/fat_fs/src/file_system" name="framework/system/fs/fat_fs/src/file_system/ff.c"/>
+			<file logicalpath="framework/system/fs/mpfs/src" name="framework/system/fs/mpfs/src/mpfs.c"/>
+            <file logicalpath="framework/system/fs/fat_fs/src/hardware_access" name="framework/system/fs/fat_fs/src/hardware_access/diskio.c"/>
+            <file logicalpath="framework/system/fs/src/dynamic" name="framework/system/fs/src/dynamic/sys_fs.c"/>
+            <file logicalpath="framework/system/fs/src/dynamic" name="framework/system/fs/src/dynamic/sys_fs_media_manager.c"/>
+		</files>
+
+		<paths>
+			<path name="framework/system/"/>
+		</paths>
+	</component>
+	
+	<component name="init">
+		<includes>
+			<include logicalpath="framework/system/int" name="framework/system/system.h"/>
+			<include logicalpath="framework/system/init" name="framework/system/init/sys_init.h"/>
+		</includes>
+		<paths>
+			<path name="framework/system/"/>
+		</paths>	
+	</component>
+	
+	<component name="int">
+		<includes>
+			<include logicalpath="framework/system/int" name="framework/system/system.h"/>
+			<include logicalpath="framework/system/int" name="framework/system/int/sys_int.h"/>
+            <include logicalpath="framework/system/int" name="framework/system/int/sys_int_mapping.h"/>
+            <include logicalpath="framework/system/int/src" name="framework/system/int/src/sys_int_private.h"/>
+		</includes>
+		<files>
+            <file logicalpath="framework/system/int/src" name="framework/system/int/src/sys_int_pic32.c"/>
+		</files>
+		<paths>
+			<path name="framework/system/"/>
+		</paths>	
+	</component>
+	
+	<component name="msg">
+		<includes>
+			<include logicalpath="framework/system/msg" name="framework/system/system.h"/>
+			<include logicalpath="framework/system/msg" name="framework/system/msg/sys_msg.h"/>
+            <include logicalpath="framework/system/msg/src" name="framework/system/msg/src/sys_msg_local.h"/>
+			<include logicalpath="framework/system/msg/config" name="framework/system/msg/config/sys_msg_config.h"/>
+		</includes>
+		<files>
+			<file logicalpath="framework/system/msg/src" name="framework/system/msg/src/sys_msg.c"/>
+		</files>
+		<paths>
+			<path name="framework/system/"/>
+		</paths>	
+	</component>
+	
+	<component name="ports">
+		<includes>
+			<include logicalpath="framework/system/ports" name="framework/system/system.h"/>
+			<include logicalpath="framework/system/ports" name="framework/system/ports/sys_ports.h"/>
+		</includes>
+		<files>
+			<file logicalpath="framework/system/ports/src" name="framework/system/ports/src/sys_ports.c"/>
+		</files>
+		<paths>
+			<path name="framework/system/"/>
+		</paths>	
+	</component>
+	
+	
+	<component name="tmr">
+		<includes>
+			<include logicalpath="framework/system/tmr" name="framework/system/system.h"/>
+			<include logicalpath="framework/system/tmr" name="framework/system/tmr/sys_tmr.h"/>
+            <include logicalpath="framework/system/tmr/src" name="framework/system/tmr/src/sys_tmr_local.h"/>
+            <include logicalpath="framework/system/tmr/src" name="framework/system/tmr/src/sys_tmr_variant_mapping.h"/>
+			<include logicalpath="framework/system/tmr/config" name="framework/system/tmr/config/sys_tmr_config.h"/>
+		</includes>
+		<files>
+			 <file logicalpath="framework/system/tmr/src" name="framework/system/tmr/src/sys_tmr.c"/>
+		</files>
+		<paths>
+			<path name="framework/system/"/>
+		</paths>	
+	</component>
+	
+	<component name="wdt">
+		<includes>
+			<include logicalpath="framework/system/wdt" name="framework/system/system.h"/>
+			<include logicalpath="framework/system/wdt" name="framework/system/wdt/sys_wdt.h"/>
+            <include logicalpath="framework/system/wdt/src" name="framework/system/wdt/src/sys_wdt_local.h"/>
+			<include logicalpath="framework/system/wdt/config" name="framework/system/wdt/config/sys_wdt_config.h"/>
+		</includes>
+		<files>
+			<file logicalpath="framework/system/wdt/src" name="framework/system/wdt/src/sys_wdt.c"/>
+		</files>
+		<paths>
+			<path name="framework/system/"/>
+		</paths>
+	</component>
+	
+</module>

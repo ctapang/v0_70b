@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE module SYSTEM "ispmodule.dtd">
+
+<!-- Harmony OS Abstraction Layer Module File -->
+<module name="osal" displayname="OS Abstraction Layer Module">
+    <component name="Required Files">
+        <includes  logicalpath="/framework/osal">
+            <include name="framework/osal/osal.h"/>
+        </includes>
+        <files>
+            <file name="framework/osal/osal.c"/>
+        </files>
+    </component>
+    <configurations exclusive="true">
+        <configuration name="None">
+            <component name="Required Files">
+                <includes  logicalpath="/framework/osal">
+                    <include name="framework/osal/osal_impl_none.h"/>
+                </includes>
+            </component>
+        </configuration>
+        <configuration name="Basic">
+            <component name="Required Files">
+                <includes  logicalpath="/framework/osal">
+                    <include name="framework/osal/osal_impl_basic.h"/>
+                </includes>
+                <files>
+                    <file name="framework/osal/osal.c"/>
+                </files>
+            </component>
+        </configuration>
+        <configuration name="FreeRTOS">
+            <component name="Required Files">
+                <includes  logicalpath="/framework/osal">
+                    <include name="framework/osal/osal_freertos.h"/>
+                </includes>
+                <files>
+                    <file name="framework/osal/osal_freertos.c"/>
+                </files>
+            </component>
+        </configuration>
+    </configurations>
+</module>

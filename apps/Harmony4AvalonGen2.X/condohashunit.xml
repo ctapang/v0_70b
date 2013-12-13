@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE module SYSTEM "ispmodule.dtd">
+
+<!-- MPLAB Harmony Board Support Package Files -->
+<module name="CondoHashUnit" displayname="CondoHashUnit">
+	<component name="Required Files">
+		<includes>
+			<include logicalpath="." name="bsp_config.h"/>
+		</includes>
+		<files>
+			<file logicalpath="." name="bsp_sys_init.c"/>
+			<file logicalpath="." name="config_performance.c"/>
+		</files>
+	</component>
+</module>

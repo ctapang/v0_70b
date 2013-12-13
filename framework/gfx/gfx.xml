@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE module SYSTEM "ispmodule.dtd">
+
+<module name="Graphics Library Module">
+    <component name="Required Files">
+        <includes>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_colors.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_analog_clock.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_button.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_check_box.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_custom_control.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_digital_meter.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_edit_box.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_font_default.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_group_box.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_list_box.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_meter.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_picture.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_progress_bar.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_radio_button.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_scan_codes.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_scheme.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_scroll_bar.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_static_text.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_text_entry.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_gol_window.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_palette.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_primitive.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_primitive_local.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_transitions.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_types_font.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_types_image.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_types_macros.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_types_palette.h"/>
+            <include logicalpath="framework/gfx" name="framework/gfx/gfx_types_resource.h"/>
+            <include logicalpath="framework/gfx/src/common_legacy" name="framework/gfx/src/common_legacy/i2c.h"/>
+            <include logicalpath="framework/gfx/src/common_legacy" name="framework/gfx/src/common_legacy/SST25VF016.h"/>
+            <include logicalpath="framework/gfx/src/common_legacy" name="framework/gfx/src/common_legacy/TouchScreen.h"/>
+	    <include logicalpath="framework/gfx/src/common_legacy" name="framework/gfx/src/common_legacy/TouchScreenCapacitive.h"/>
+            <include logicalpath="framework/gfx/src/common_legacy" name="framework/gfx/src/common_legacy/TouchScreenResistive.h"/>
+        </includes>
+        <files>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_font_default.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_analog_clock.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_button.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_check_box.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_custom_control.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_digital_meter.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_edit_box.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_font_default.S"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_font_default_reference.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_group_box.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_list_box.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_meter.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_picture.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_progress_bar.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_radio_button.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_scheme_default.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_scroll_bar.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_static_text.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_text_entry.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_gol_window.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_palette.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_primitive.c"/>
+            <file logicalpath="framework/gfx/src" name="framework/gfx/src/gfx_transitions.c"/>
+            <file logicalpath="framework/gfx/src/common_legacy" name="framework/gfx/src/common_legacy/i2c_sw.c"/>
+            <file logicalpath="framework/gfx/src/common_legacy" name="framework/gfx/src/common_legacy/SST25VF016.c"/>
+            <file logicalpath="framework/gfx/src/common_legacy" name="framework/gfx/src/common_legacy/TouchScreen.c"/>
+	    <file logicalpath="framework/gfx/src/common_legacy" name="framework/gfx/src/common_legacy/TCON_SSD1289.c"/>
+	    <file logicalpath="framework/gfx/src/common_legacy" name="framework/gfx/src/common_legacy/TouchScreenCapacitive.c"/>
+            <file logicalpath="framework/gfx/src/common_legacy" name="framework/gfx/src/common_legacy/TouchScreenResistive.c"/>
+        </files>
+    </component>
+</module>

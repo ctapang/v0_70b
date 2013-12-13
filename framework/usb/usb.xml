@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE module SYSTEM "ispmodule.dtd">
+
+<module name="usb">    
+	<configurations exclusive="true">	
+		<configuration name="device">
+	
+			<component name="HID_Basic">
+				<includes>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_chapter_9.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_common.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_device.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_device_hid.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_device_mapping.h"/>
+					<include logicalpath="/framework/usb/src" name="framework/usb/src/usb_device_local.h"/>
+				</includes>
+				<files>
+					<file logicalpath="/framework/driver/usb/src/dynamic" name="framework/driver/usb/src/dynamic/drv_usb.c"/>
+					<file logicalpath="/framework/driver/usb/src/dynamic" name="framework/driver/usb/src/dynamic/drv_usb_device.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_device.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_device_hid.c"/>
+
+				</files>
+				<paths>
+                     <path name="framework"/>
+                </paths>
+			</component> <!-- End of USB Device HID Basic-->
+
+			<component name="HID_Mouse">
+				<includes>
+                    <include logicalpath="/app" name="apps/usb/device/hid_mouse/firmware/src/mouse.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_chapter_9.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_common.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_device.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_device_hid.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_device_mapping.h"/>
+					<include logicalpath="/framework/usb/src" name="framework/usb/src/usb_device_local.h"/>
+				</includes>
+				<files>
+                    <file logicalpath="/app" name="apps/usb/device/hid_mouse/firmware/src/mouse.c"/>
+					<file logicalpath="/framework/driver/usb/src/dynamic" name="framework/driver/usb/src/dynamic/drv_usb.c"/>
+					<file logicalpath="/framework/driver/usb/src/dynamic" name="framework/driver/usb/src/dynamic/drv_usb_device.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_device.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_device_hid.c"/>
+
+				</files>
+				<paths>
+                     <path name="framework"/>
+                </paths>
+			</component> <!-- End of USB Device HID Mouse-->
+
+			<component name="HID_Keyboard">
+				<includes>
+                    <include logicalpath="/app" name="apps/usb/device/hid_keyboard/firmware/src/keyboard.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_chapter_9.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_common.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_device.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_device_hid.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_device_mapping.h"/>
+					<include logicalpath="/framework/usb/src" name="framework/usb/src/usb_device_local.h"/>
+				</includes>
+				<files>
+                    <file logicalpath="/app" name="apps/usb/device/hid_keyboard/firmware/src/keyboard.c"/>
+					<file logicalpath="/framework/driver/usb/src/dynamic" name="framework/driver/usb/src/dynamic/drv_usb.c"/>
+					<file logicalpath="/framework/driver/usb/src/dynamic" name="framework/driver/usb/src/dynamic/drv_usb_device.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_device.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_device_hid.c"/>
+
+				</files>
+				<paths>
+                     <path name="framework"/>
+                </paths>
+			</component> <!-- End USB Device HID Keyboard-->
+
+			<!-- USB Device HID Joystick-->
+			<component name="HID_Joystick">
+				<includes>
+                    <include logicalpath="/app" name="apps/usb/device/hid_joystick/firmware/src/joystick.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_chapter_9.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_common.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_device.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_device_hid.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_device_mapping.h"/>
+					<include logicalpath="/framework/usb/src" name="framework/usb/src/usb_device_local.h"/>
+				</includes>
+				<files>
+                    <file logicalpath="/framework/driver/usb/src/dynamic" name="framework/driver/usb/src/dynamic/drv_usb.c"/>
+					<file logicalpath="/framework/driver/usb/src/dynamic" name="framework/driver/usb/src/dynamic/drv_usb_device.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_device.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_device_hid.c"/>
+
+				</files>
+				<paths>
+                     <path name="framework"/>
+                </paths>
+			</component> <!-- End of USB Device HID Joystick-->
+
+			<component name="CDC">
+				<includes>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_chapter_9.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_common.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_device.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/src/usb_device_cdc_local.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_device_cdc.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_device_mapping.h"/>
+					<include logicalpath="/framework/usb/src" name="framework/usb/src/usb_device_local.h"/>
+				</includes>
+				<files>
+					<file logicalpath="/framework/driver/usb/src/dynamic" name="framework/driver/usb/src/dynamic/drv_usb.c"/>
+					<file logicalpath="/framework/driver/usb/src/dynamic" name="framework/driver/usb/src/dynamic/drv_usb_device.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_device.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_device_cdc.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_device_cdc_acm.c"/>
+				</files>
+				<paths>
+                     <path name="framework"/>
+                </paths>
+			</component> <!-- End of USB CDC Class-->
+			
+		</configuration>
+        <configuration name="host">
+
+			<component name="Host CDC">
+				<includes>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_chapter_9.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_common.h"/>
+                    <include logicalpath="/framework/usb" name="framework/usb/usb_cdc.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_host.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_host_cdc.h"/>
+					<include logicalpath="/framework/usb/src" name="framework/usb/src/usb_host_local.h"/>
+                    <include logicalpath="/framework/usb/src" name="framework/usb/src/usb_host_cdc_local.h"/>
+				</includes>
+				<files>
+					<file logicalpath="/framework/driver/usb/src/dynamic" name="framework/driver/usb/src/dynamic/drv_usb.c"/>
+					<file logicalpath="/framework/driver/usb/src/dynamic" name="framework/driver/usb/src/dynamic/drv_usb_host.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_host.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_host_cdc.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_host_cdc_acm.c"/>
+				</files>
+				<paths>
+                     <path name="framework"/>
+                </paths>
+			</component> <!-- End of Host CDC-->
+
+			<component name="Host MSD">
+				<includes>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_chapter_9.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_common.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_host.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_host_msd_local.h"/>
+					<include logicalpath="/framework/usb" name="framework/usb/usb_host_msd.h"/>
+					<include logicalpath="/framework/usb/src" name="framework/usb/src/usb_host_local.h"/>
+				</includes>
+				<files>
+					<file logicalpath="/framework/driver/usb/src/dynamic" name="framework/driver/usb/src/dynamic/drv_usb.c"/>
+					<file logicalpath="/framework/driver/usb/src/dynamic" name="framework/driver/usb/src/dynamic/drv_usb_host.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_host.c"/>
+					<file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_host_msd.c"/>
+                    <file logicalpath="/framework/usb/src/dynamic" name="framework/usb/src/dynamic/usb_host_scsi.c"/>
+				</files>
+				<paths>
+                     <path name="framework"/>
+                </paths>
+			</component> <!-- End of host MSD-->
+
+		</configuration>
+    </configurations>
+</module> <!-- End of USB Module-->

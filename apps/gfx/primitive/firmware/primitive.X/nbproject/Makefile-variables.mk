@@ -1,0 +1,34 @@
+#
+# Generated - do not edit!
+#
+# NOCDDL
+#
+CND_BASEDIR=`pwd`
+# pic32mzsk_meb2_wqvga configuration
+CND_ARTIFACT_DIR_pic32mzsk_meb2_wqvga=dist/pic32mzsk_meb2_wqvga/production
+CND_ARTIFACT_NAME_pic32mzsk_meb2_wqvga=primitive.X.production.hex
+CND_ARTIFACT_PATH_pic32mzsk_meb2_wqvga=dist/pic32mzsk_meb2_wqvga/production/primitive.X.production.hex
+CND_PACKAGE_DIR_pic32mzsk_meb2_wqvga=${CND_DISTDIR}/pic32mzsk_meb2_wqvga/package
+CND_PACKAGE_NAME_pic32mzsk_meb2_wqvga=primitive.x.tar
+CND_PACKAGE_PATH_pic32mzsk_meb2_wqvga=${CND_DISTDIR}/pic32mzsk_meb2_wqvga/package/primitive.x.tar
+# pic32mxusbsk_pictailssd_qvga configuration
+CND_ARTIFACT_DIR_pic32mxusbsk_pictailssd_qvga=dist/pic32mxusbsk_pictailssd_qvga/production
+CND_ARTIFACT_NAME_pic32mxusbsk_pictailssd_qvga=primitive.X.production.hex
+CND_ARTIFACT_PATH_pic32mxusbsk_pictailssd_qvga=dist/pic32mxusbsk_pictailssd_qvga/production/primitive.X.production.hex
+CND_PACKAGE_DIR_pic32mxusbsk_pictailssd_qvga=${CND_DISTDIR}/pic32mxusbsk_pictailssd_qvga/package
+CND_PACKAGE_NAME_pic32mxusbsk_pictailssd_qvga=primitive.x.tar
+CND_PACKAGE_PATH_pic32mxusbsk_pictailssd_qvga=${CND_DISTDIR}/pic32mxusbsk_pictailssd_qvga/package/primitive.x.tar
+# pic32mxusbsk_pictails1d_wqvga configuration
+CND_ARTIFACT_DIR_pic32mxusbsk_pictails1d_wqvga=dist/pic32mxusbsk_pictails1d_wqvga/production
+CND_ARTIFACT_NAME_pic32mxusbsk_pictails1d_wqvga=primitive.X.production.hex
+CND_ARTIFACT_PATH_pic32mxusbsk_pictails1d_wqvga=dist/pic32mxusbsk_pictails1d_wqvga/production/primitive.X.production.hex
+CND_PACKAGE_DIR_pic32mxusbsk_pictails1d_wqvga=${CND_DISTDIR}/pic32mxusbsk_pictails1d_wqvga/package
+CND_PACKAGE_NAME_pic32mxusbsk_pictails1d_wqvga=primitive.x.tar
+CND_PACKAGE_PATH_pic32mxusbsk_pictails1d_wqvga=${CND_DISTDIR}/pic32mxusbsk_pictails1d_wqvga/package/primitive.x.tar
+# pic32mxusbsk_meb configuration
+CND_ARTIFACT_DIR_pic32mxusbsk_meb=dist/pic32mxusbsk_meb/production
+CND_ARTIFACT_NAME_pic32mxusbsk_meb=primitive.X.production.hex
+CND_ARTIFACT_PATH_pic32mxusbsk_meb=dist/pic32mxusbsk_meb/production/primitive.X.production.hex
+CND_PACKAGE_DIR_pic32mxusbsk_meb=${CND_DISTDIR}/pic32mxusbsk_meb/package
+CND_PACKAGE_NAME_pic32mxusbsk_meb=primitive.x.tar
+CND_PACKAGE_PATH_pic32mxusbsk_meb=${CND_DISTDIR}/pic32mxusbsk_meb/package/primitive.x.tar

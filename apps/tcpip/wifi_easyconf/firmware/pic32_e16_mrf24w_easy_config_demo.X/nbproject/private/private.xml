@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
+        <file>file:/C:/isp_v0_70b/apps/tcpip/wifi_easyconf/firmware/src/main_demo.c</file>
+        <file>file:/C:/isp_v0_70b/framework/driver/wifi/mrf24w/src/drv_wifi_scan.c</file>
+        <file>file:/C:/isp_v0_70b/framework/driver/wifi/mrf24w/src/drv_wifi_events.c</file>
+        <file>file:/C:/isp_v0_70b/framework/driver/wifi/mrf24w/src/drv_wifi_event_handler.c</file>
+        <file>file:/C:/isp_v0_70b/framework/driver/wifi/mrf24w/src/drv_wifi_mac.c</file>
+        <file>file:/C:/isp_v0_70b/framework/driver/wifi/mrf24w/src/drv_wifi_mac_pic32.c</file>
+        <file>file:/C:/isp_v0_70b/apps/tcpip/wifi_easyconf/firmware/src/wf_config.c</file>
+        <file>file:/C:/isp_v0_70b/framework/driver/wifi/mrf24w/drv_wifi.h</file>
+        <file>file:/C:/isp_v0_70b/framework/driver/wifi/mrf24w/src/drv_wifi_connection_manager.c</file>
+        <file>file:/C:/isp_v0_70b/framework/driver/wifi/mrf24w/src/drv_wifi_priv.h</file>
+        <file>file:/C:/isp_v0_70b/framework/tcpip/src/tcpip_manager.c</file>
+        <file>file:/C:/isp_v0_70b/framework/tcpip/src/system/system_userio.c</file>
+        <file>file:/C:/isp_v0_70b/framework/driver/wifi/mrf24w/src/drv_wifi_mgmt_msg.c</file>
+    </open-files>
+</project-private>
