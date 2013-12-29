@@ -91,17 +91,14 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
     implemented by the application's system configuration (in the application's
     configuration-specific "sys_tasks.c" file).
  */
+
+extern APP_DATA appObject;
+
 void SYS_Tasks ( void )
 {
     // TODO call task routines for the Harmony drivers and middleware
-	/* TODO For Graphics Stack. In the future releases, the tool would add required task API's appropriately.
 
-			  GFX_OBJ_Tasks(); // Draw GOL objects
-			  GFX_PRIM_Tasks();
-			  GFX_DRV_lcc_Tasks();
-			  GFX_DRV_SSD1926_Tasks();
-			  GFX_DRV_S1D13517_Tasks();
-	*/
+    SYS_TMR_Tasks( appObject.TimerObjectHandle );
 
 	/* TODO For USB Stack. In the future releases, the tool would add required task API's appropriately.
 
@@ -112,16 +109,6 @@ void SYS_Tasks ( void )
 			USB_HOST_CDC_Tasks();
 	*/
 
-	/* TODO For TCPIP Stack. In the future releases, the tool would add required task API's appropriately.
-
-			TCPIP_STACK_Task();
-
-			//If the macro TCPIP_STACK_USE_DHCP_CLIENT is defined
-			TCPIP_DHCP_Task( );
-
-			//If the macro TCPIP_STACK_USE_UDP is defined
-			TCPIP_UDP_Task( );
-	*/
     
     /* Call the application's tasks routine */
     APP_Tasks ( );

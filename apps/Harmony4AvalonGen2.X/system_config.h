@@ -110,6 +110,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #define DRV_TMR_INTERRUPT_MODE 0
 #define DRV_TMR_INSTANCES_NUMBER 4
 #define DRV_TMR_CLIENTS_NUMBER 4
+#define DRV_TMR_ALARM_ENABLE 1
 
 
 // *****************************************************************************

@@ -57,7 +57,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 /* Routines available for accessing VREGS, MASKS, POS, LEN are 
 
   VREGs: 
-    _PORTS_WRITE_A_VREG(index)
+    _PORTS_WRITE_B_VREG(index)
     _PORTS_REMAP_FUNC_INT1_VREG(index)
 
   MASKs: 
@@ -87,7 +87,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 PLIB_TEMPLATE void PORTS_PinWrite_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos , bool            value )
 {
-    _SFR_BIT_WRITE(_PORTS_WRITE_A_VREG(index) + (channel * 0x40),
+    _SFR_BIT_WRITE(_PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x40),
                            bitPos ,
                            value                      );
 	
@@ -107,7 +107,7 @@ PLIB_TEMPLATE void PORTS_PinWrite_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANN
 PLIB_TEMPLATE void PORTS_PinSet_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos )
 {
 
-	_SFR_BIT_SET(_PORTS_WRITE_A_VREG(index) + (channel * 0x40),
+	_SFR_BIT_SET(_PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x40),
                            bitPos );
     
 }
@@ -126,7 +126,7 @@ PLIB_TEMPLATE void PORTS_PinSet_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL
 PLIB_TEMPLATE void PORTS_PinClear_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos )
 {
 	
-	_SFR_BIT_CLEAR(_PORTS_WRITE_A_VREG(index) + (channel * 0x40) ,
+	_SFR_BIT_CLEAR(_PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x40) ,
                            bitPos );
 						   
 }
@@ -145,7 +145,7 @@ PLIB_TEMPLATE void PORTS_PinClear_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANN
 PLIB_TEMPLATE void PORTS_PinToggle_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos )
 {
 
-	_SFR_BIT_INVERT(_PORTS_WRITE_A_VREG(index) + (channel * 0x40),
+	_SFR_BIT_INVERT(_PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x40),
                            bitPos );
 						   
 }
@@ -163,7 +163,7 @@ PLIB_TEMPLATE void PORTS_PinToggle_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHAN
 
 PLIB_TEMPLATE void PORTS_Write_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_DATA_TYPE value )
 {
-    _SFR_WRITE(_PORTS_WRITE_A_VREG(index) + (channel * 0x40),
+    _SFR_WRITE(_PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x40),
                            value );
 }
 
@@ -180,7 +180,7 @@ PLIB_TEMPLATE void PORTS_Write_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL 
 
 PLIB_TEMPLATE void PORTS_Set_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_DATA_TYPE value , PORTS_DATA_MASK mask )
 {
-    _SFR_WRITE(_PORTS_WRITE_A_VREG(index) + (channel * 0x40),
+    _SFR_WRITE(_PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x40),
                            value );
 	
 }
@@ -198,7 +198,7 @@ PLIB_TEMPLATE void PORTS_Set_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL ch
 
 PLIB_TEMPLATE void PORTS_Toggle_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_DATA_MASK toggleMask )
 {
-    _SFR_FIELD_INVERT( _PORTS_WRITE_A_VREG(index) + (channel * 0x40),
+    _SFR_FIELD_INVERT( _PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x40),
                                 toggleMask, 0,
                                 0xFFFF );
 }
@@ -217,7 +217,7 @@ PLIB_TEMPLATE void PORTS_Toggle_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL
 PLIB_TEMPLATE void PORTS_Clear_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_DATA_MASK clearMask )
 {
     
-	_SFR_FIELD_CLEAR(_PORTS_WRITE_A_VREG(index) + (channel * 0x40),
+	_SFR_FIELD_CLEAR(_PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x40),
                          clearMask, 0 , 0xFFFF);
 						 
 }

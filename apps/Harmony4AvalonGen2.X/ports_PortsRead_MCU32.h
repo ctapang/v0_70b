@@ -2,7 +2,7 @@
   PORTS Peripheral Library Template Implementation
 
   File Name:
-    ports_PortsRead_MCU32_PPS.h
+    ports_PortsRead_MCU32.h
 
   Summary:
     PORTS PLIB Template Implementation
@@ -10,7 +10,7 @@
   Description:
     This header file contains template implementations
     For Feature : PortsRead
-    and its Variant : MCU32_PPS
+    and its Variant : MCU32
     For following APIs :
         PLIB_PORTS_PinGet
         PLIB_PORTS_Read
@@ -44,80 +44,80 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 //DOM-IGNORE-END
 
-#ifndef _PORTS_PORTSREAD_MCU32_PPS_H
-#define _PORTS_PORTSREAD_MCU32_PPS_H
+#ifndef _PORTS_PORTSREAD_MCU32_H
+#define _PORTS_PORTSREAD_MCU32_H
 
 //******************************************************************************
 /* Routines available for accessing VREGS, MASKS, POS, LEN are 
 
   VREGs: 
-    _PORTS_READ_(index)
-    _PORTS_REMAP_A_VREGFUNC_INT1_VREG(index)
+    _PORTS_READ_B_VREG(index)
+    _PORTS_PIN_MODE_VREG(index)
 
   MASKs: 
     _PORTS_READ_B_MASK(index)
-    _PORTS_REMAP_FUNC_INT1_MASK(index)
+    _PORTS_PIN_MODE_MASK(index)
 
   POSs: 
     _PORTS_READ_B_POS(index)
-    _PORTS_REMAP_FUNC_INT1_POS(index)
+    _PORTS_PIN_MODE_POS(index)
 
   LENs: 
     _PORTS_READ_B_LEN(index)
-    _PORTS_REMAP_FUNC_INT1_LEN(index)
+    _PORTS_PIN_MODE_LEN(index)
 
 */
 
 
 //******************************************************************************
-/* Function :  PORTS_PinGet_MCU32_PPS
+/* Function :  PORTS_PinGet_MCU32
 
   Summary:
-    Implements MCU32_PPS variant of PLIB_PORTS_PinGet 
+    Implements MCU32 variant of PLIB_PORTS_PinGet 
 
   Description:
-    This template implements the MCU32_PPS variant of the PLIB_PORTS_PinGet function.
+    This template implements the MCU32 variant of the PLIB_PORTS_PinGet function.
 */
 
-PLIB_TEMPLATE bool PORTS_PinGet_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos )
+PLIB_TEMPLATE bool PORTS_PinGet_MCU32( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos )
 {
-    return( _SFR_BIT_READ( _PORTS_READ_A_VREG(index) + (channel * 0x40), bitPos ) );
+    return( _SFR_BIT_READ( _PORTS_READ_B_VREG(index) + ((channel-1) * 0x10), bitPos ) );
 }
 
 
 //******************************************************************************
-/* Function :  PORTS_Read_MCU32_PPS
+/* Function :  PORTS_Read_MCU32
 
   Summary:
-    Implements MCU32_PPS variant of PLIB_PORTS_Read 
+    Implements MCU32 variant of PLIB_PORTS_Read 
 
   Description:
-    This template implements the MCU32_PPS variant of the PLIB_PORTS_Read function.
+    This template implements the MCU32 variant of the PLIB_PORTS_Read function.
 */
 
-PLIB_TEMPLATE PORTS_DATA_TYPE PORTS_Read_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel )
+PLIB_TEMPLATE PORTS_DATA_TYPE PORTS_Read_MCU32( PORTS_MODULE_ID index , PORTS_CHANNEL channel )
 {
-    return( _SFR_READ( _PORTS_READ_A_VREG(index) + (channel * 0x40) ) );
+    return( _SFR_READ( _PORTS_READ_B_VREG(index) + ((channel-1) * 0x10) ) );
 }
 
 
 //******************************************************************************
-/* Function :  PORTS_ExistsPortsRead_MCU32_PPS
+/* Function :  PORTS_ExistsPortsRead_MCU32
 
   Summary:
-    Implements MCU32_PPS variant of PLIB_PORTS_ExistsPortsRead
+    Implements MCU32 variant of PLIB_PORTS_ExistsPortsRead
 
   Description:
-    This template implements the MCU32_PPS variant of the PLIB_PORTS_ExistsPortsRead function.
+    This template implements the MCU32 variant of the PLIB_PORTS_ExistsPortsRead function.
 */
 
-PLIB_TEMPLATE bool PORTS_ExistsPortsRead_MCU32_PPS( PORTS_MODULE_ID index )
+PLIB_TEMPLATE bool PORTS_ExistsPortsRead_MCU32( PORTS_MODULE_ID index )
 {
     return true;
 }
 
 
-#endif /*_PORTS_PORTSREAD_MCU32_PPS_H*/
+#endif /*_PORTS_PORTSREAD_MCU32_H*/
 
 /******************************************************************************
  End of File

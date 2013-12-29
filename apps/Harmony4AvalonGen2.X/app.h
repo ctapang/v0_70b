@@ -100,7 +100,9 @@ typedef enum
 typedef struct
 {
     APP_STATES appState;
-
+    SYS_MODULE_OBJ spiReport;
+    SYS_MODULE_OBJ spiConfig;
+    SYS_MODULE_OBJ TimerObjectHandle;
 } APP_DATA;
 
 

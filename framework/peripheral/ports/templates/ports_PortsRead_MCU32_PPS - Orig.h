@@ -51,8 +51,8 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 /* Routines available for accessing VREGS, MASKS, POS, LEN are 
 
   VREGs: 
-    _PORTS_READ_(index)
-    _PORTS_REMAP_A_VREGFUNC_INT1_VREG(index)
+    _PORTS_READ_B_VREG(index)
+    _PORTS_REMAP_FUNC_INT1_VREG(index)
 
   MASKs: 
     _PORTS_READ_B_MASK(index)
@@ -81,7 +81,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 PLIB_TEMPLATE bool PORTS_PinGet_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos )
 {
-    return( _SFR_BIT_READ( _PORTS_READ_A_VREG(index) + (channel * 0x40), bitPos ) );
+    return( _SFR_BIT_READ( _PORTS_READ_B_VREG(index) + ((channel-1) * 0x40), bitPos ) );
 }
 
 
@@ -97,7 +97,7 @@ PLIB_TEMPLATE bool PORTS_PinGet_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL
 
 PLIB_TEMPLATE PORTS_DATA_TYPE PORTS_Read_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel )
 {
-    return( _SFR_READ( _PORTS_READ_A_VREG(index) + (channel * 0x40) ) );
+    return( _SFR_READ( _PORTS_READ_B_VREG(index) + ((channel-1) * 0x40) ) );
 }
 
 

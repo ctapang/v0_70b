@@ -3148,6 +3148,8 @@ INLINE_API bool PLIB_TMR_ExistsPeriod16Bit(TMR_MODULE_ID index)
 
 INLINE_API void PLIB_TMR_Period32BitSet(TMR_MODULE_ID index, uint32_t period)
 {
+    if (!period) // debugger doesn't work here: it says period has zero value?
+        return;
     switch (index) {
         case TMR_ID_1 :
             TMR_Period32BitSet_Unsupported(index, period);

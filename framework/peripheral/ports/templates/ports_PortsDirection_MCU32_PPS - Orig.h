@@ -54,7 +54,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 /* Routines available for accessing VREGS, MASKS, POS, LEN are 
 
   VREGs: 
-    _PORTS_DIRECTION_A_VREG(index)
+    _PORTS_DIRECTION_B_VREG(index)
     _PORTS_REMAP_FUNC_INT1_VREG(index)
 
   MASKs: 
@@ -84,7 +84,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 PLIB_TEMPLATE void PORTS_PinDirectionInputSet_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos )
 {
-    _SFR_BIT_SET( _PORTS_DIRECTION_A_VREG(index) + (channel * 0x40), bitPos );
+    _SFR_BIT_SET( _PORTS_DIRECTION_B_VREG(index) + ((channel-1) * 0x40), bitPos );
 }
 
 
@@ -100,7 +100,7 @@ PLIB_TEMPLATE void PORTS_PinDirectionInputSet_MCU32_PPS( PORTS_MODULE_ID index ,
 
 PLIB_TEMPLATE void PORTS_PinDirectionOutputSet_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos )
 {
-    _SFR_BIT_CLEAR( _PORTS_DIRECTION_A_VREG(index) + (channel * 0x40), bitPos );
+    _SFR_BIT_CLEAR( _PORTS_DIRECTION_B_VREG(index) + ((channel-1) * 0x40), bitPos );
 }
 
 
@@ -116,8 +116,9 @@ PLIB_TEMPLATE void PORTS_PinDirectionOutputSet_MCU32_PPS( PORTS_MODULE_ID index 
 
 PLIB_TEMPLATE void PORTS_DirectionInputSet_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_DATA_MASK mask )
 {
-    _SFR_SET( _PORTS_DIRECTION_A_VREG(index) + (channel * 0x40), mask );
+    _SFR_SET( _PORTS_DIRECTION_B_VREG(index) + ((channel-1) * 0x40), mask );
 }
+
 
 //******************************************************************************
 /* Function :  PORTS_DirectionOutputSet_MCU32_PPS
@@ -131,7 +132,7 @@ PLIB_TEMPLATE void PORTS_DirectionInputSet_MCU32_PPS( PORTS_MODULE_ID index , PO
 
 PLIB_TEMPLATE void PORTS_DirectionOutputSet_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_DATA_MASK mask )
 {
-    _SFR_CLEAR( _PORTS_DIRECTION_A_VREG(index) + (channel * 0x40), mask );
+    _SFR_CLEAR( _PORTS_DIRECTION_B_VREG(index) + ((channel-1) * 0x40), mask );
 }
 
 
@@ -147,7 +148,7 @@ PLIB_TEMPLATE void PORTS_DirectionOutputSet_MCU32_PPS( PORTS_MODULE_ID index , P
 
 PLIB_TEMPLATE PORTS_DATA_MASK PORTS_DirectionGet_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel )
 {
-    return( _SFR_READ( _PORTS_DIRECTION_A_VREG(index) + (channel * 0x40) ) );
+    return( _SFR_READ( _PORTS_DIRECTION_B_VREG(index) + ((channel-1) * 0x40) ) );
 }
 
 

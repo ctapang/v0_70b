@@ -2,7 +2,7 @@
   PORTS Peripheral Library Template Implementation
 
   File Name:
-    ports_PortsWrite_MCU32_PPS.h
+    ports_PortsWrite_MCU32.h
 
   Summary:
     PORTS PLIB Template Implementation
@@ -10,7 +10,7 @@
   Description:
     This header file contains template implementations
     For Feature : PortsWrite
-    and its Variant : MCU32_PPS
+    and its Variant : MCU32
     For following APIs :
         PLIB_PORTS_PinWrite
         PLIB_PORTS_PinSet
@@ -50,44 +50,44 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 //DOM-IGNORE-END
 
-#ifndef _PORTS_PORTSWRITE_MCU32_PPS_H
-#define _PORTS_PORTSWRITE_MCU32_PPS_H
+#ifndef _PORTS_PORTSWRITE_MCU32_H
+#define _PORTS_PORTSWRITE_MCU32_H
 
 //******************************************************************************
 /* Routines available for accessing VREGS, MASKS, POS, LEN are 
 
   VREGs: 
-    _PORTS_WRITE_A_VREG(index)
-    _PORTS_REMAP_FUNC_INT1_VREG(index)
+    _PORTS_WRITE_B_VREG(index)
+    _PORTS_PIN_MODE_VREG(index)
 
   MASKs: 
     _PORTS_WRITE_B_MASK(index)
-    _PORTS_REMAP_FUNC_INT1_MASK(index)
+    _PORTS_PIN_MODE_MASK(index)
 
   POSs: 
     _PORTS_WRITE_B_POS(index)
-    _PORTS_REMAP_FUNC_INT1_POS(index)
+    _PORTS_PIN_MODE_POS(index)
 
   LENs: 
     _PORTS_WRITE_B_LEN(index)
-    _PORTS_REMAP_FUNC_INT1_LEN(index)
+    _PORTS_PIN_MODE_LEN(index)
 
 */
 
 
 //******************************************************************************
-/* Function :  PORTS_PinWrite_MCU32_PPS
+/* Function :  PORTS_PinWrite_MCU32
 
   Summary:
-    Implements MCU32_PPS variant of PLIB_PORTS_PinWrite 
+    Implements MCU32 variant of PLIB_PORTS_PinWrite 
 
   Description:
-    This template implements the MCU32_PPS variant of the PLIB_PORTS_PinWrite function.
+    This template implements the MCU32 variant of the PLIB_PORTS_PinWrite function.
 */
 
-PLIB_TEMPLATE void PORTS_PinWrite_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos , bool            value )
+PLIB_TEMPLATE void PORTS_PinWrite_MCU32( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos , bool            value )
 {
-    _SFR_BIT_WRITE(_PORTS_WRITE_A_VREG(index) + (channel * 0x40),
+    _SFR_BIT_WRITE(_PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x10),
                            bitPos ,
                            value                      );
 	
@@ -95,151 +95,151 @@ PLIB_TEMPLATE void PORTS_PinWrite_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANN
 
 
 //******************************************************************************
-/* Function :  PORTS_PinSet_MCU32_PPS
+/* Function :  PORTS_PinSet_MCU32
 
   Summary:
-    Implements MCU32_PPS variant of PLIB_PORTS_PinSet 
+    Implements MCU32 variant of PLIB_PORTS_PinSet 
 
   Description:
-    This template implements the MCU32_PPS variant of the PLIB_PORTS_PinSet function.
+    This template implements the MCU32 variant of the PLIB_PORTS_PinSet function.
 */
 
-PLIB_TEMPLATE void PORTS_PinSet_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos )
+PLIB_TEMPLATE void PORTS_PinSet_MCU32( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos )
 {
 
-	_SFR_BIT_SET(_PORTS_WRITE_A_VREG(index) + (channel * 0x40),
+	_SFR_BIT_SET(_PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x10),
                            bitPos );
     
 }
 
 
 //******************************************************************************
-/* Function :  PORTS_PinClear_MCU32_PPS
+/* Function :  PORTS_PinClear_MCU32
 
   Summary:
-    Implements MCU32_PPS variant of PLIB_PORTS_PinClear 
+    Implements MCU32 variant of PLIB_PORTS_PinClear 
 
   Description:
-    This template implements the MCU32_PPS variant of the PLIB_PORTS_PinClear function.
+    This template implements the MCU32 variant of the PLIB_PORTS_PinClear function.
 */
 
-PLIB_TEMPLATE void PORTS_PinClear_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos )
+PLIB_TEMPLATE void PORTS_PinClear_MCU32( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos )
 {
 	
-	_SFR_BIT_CLEAR(_PORTS_WRITE_A_VREG(index) + (channel * 0x40) ,
+	_SFR_BIT_CLEAR(_PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x10) ,
                            bitPos );
 						   
 }
 
 
 //******************************************************************************
-/* Function :  PORTS_PinToggle_MCU32_PPS
+/* Function :  PORTS_PinToggle_MCU32
 
   Summary:
-    Implements MCU32_PPS variant of PLIB_PORTS_PinToggle 
+    Implements MCU32 variant of PLIB_PORTS_PinToggle 
 
   Description:
-    This template implements the MCU32_PPS variant of the PLIB_PORTS_PinToggle function.
+    This template implements the MCU32 variant of the PLIB_PORTS_PinToggle function.
 */
 
-PLIB_TEMPLATE void PORTS_PinToggle_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos )
+PLIB_TEMPLATE void PORTS_PinToggle_MCU32( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_BIT_POS       bitPos )
 {
 
-	_SFR_BIT_INVERT(_PORTS_WRITE_A_VREG(index) + (channel * 0x40),
+	_SFR_BIT_INVERT(_PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x10),
                            bitPos );
 						   
 }
 
 
 //******************************************************************************
-/* Function :  PORTS_Write_MCU32_PPS
+/* Function :  PORTS_Write_MCU32
 
   Summary:
-    Implements MCU32_PPS variant of PLIB_PORTS_Write 
+    Implements MCU32 variant of PLIB_PORTS_Write 
 
   Description:
-    This template implements the MCU32_PPS variant of the PLIB_PORTS_Write function.
+    This template implements the MCU32 variant of the PLIB_PORTS_Write function.
 */
 
-PLIB_TEMPLATE void PORTS_Write_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_DATA_TYPE value )
+PLIB_TEMPLATE void PORTS_Write_MCU32( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_DATA_TYPE value )
 {
-    _SFR_WRITE(_PORTS_WRITE_A_VREG(index) + (channel * 0x40),
+    _SFR_WRITE(_PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x10),
                            value );
 }
 
 
 //******************************************************************************
-/* Function :  PORTS_Set_MCU32_PPS
+/* Function :  PORTS_Set_MCU32
 
   Summary:
-    Implements MCU32_PPS variant of PLIB_PORTS_Set 
+    Implements MCU32 variant of PLIB_PORTS_Set 
 
   Description:
-    This template implements the MCU32_PPS variant of the PLIB_PORTS_Set function.
+    This template implements the MCU32 variant of the PLIB_PORTS_Set function.
 */
 
-PLIB_TEMPLATE void PORTS_Set_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_DATA_TYPE value , PORTS_DATA_MASK mask )
+PLIB_TEMPLATE void PORTS_Set_MCU32( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_DATA_TYPE value , PORTS_DATA_MASK mask )
 {
-    _SFR_WRITE(_PORTS_WRITE_A_VREG(index) + (channel * 0x40),
+    _SFR_WRITE(_PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x10),
                            value );
 	
 }
 
 
 //******************************************************************************
-/* Function :  PORTS_Toggle_MCU32_PPS
+/* Function :  PORTS_Toggle_MCU32
 
   Summary:
-    Implements MCU32_PPS variant of PLIB_PORTS_Toggle 
+    Implements MCU32 variant of PLIB_PORTS_Toggle 
 
   Description:
-    This template implements the MCU32_PPS variant of the PLIB_PORTS_Toggle function.
+    This template implements the MCU32 variant of the PLIB_PORTS_Toggle function.
 */
 
-PLIB_TEMPLATE void PORTS_Toggle_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_DATA_MASK toggleMask )
+PLIB_TEMPLATE void PORTS_Toggle_MCU32( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_DATA_MASK toggleMask )
 {
-    _SFR_FIELD_INVERT( _PORTS_WRITE_A_VREG(index) + (channel * 0x40),
+    _SFR_FIELD_INVERT( _PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x10),
                                 toggleMask, 0,
                                 0xFFFF );
 }
 
 
 //******************************************************************************
-/* Function :  PORTS_Clear_MCU32_PPS
+/* Function :  PORTS_Clear_MCU32
 
   Summary:
-    Implements MCU32_PPS variant of PLIB_PORTS_Clear 
+    Implements MCU32 variant of PLIB_PORTS_Clear 
 
   Description:
-    This template implements the MCU32_PPS variant of the PLIB_PORTS_Clear function.
+    This template implements the MCU32 variant of the PLIB_PORTS_Clear function.
 */
 
-PLIB_TEMPLATE void PORTS_Clear_MCU32_PPS( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_DATA_MASK clearMask )
+PLIB_TEMPLATE void PORTS_Clear_MCU32( PORTS_MODULE_ID index , PORTS_CHANNEL channel , PORTS_DATA_MASK clearMask )
 {
     
-	_SFR_FIELD_CLEAR(_PORTS_WRITE_A_VREG(index) + (channel * 0x40),
+	_SFR_FIELD_CLEAR(_PORTS_WRITE_B_VREG(index) + ((channel-1) * 0x10),
                          clearMask, 0 , 0xFFFF);
 						 
 }
 
 
 //******************************************************************************
-/* Function :  PORTS_ExistsPortsWrite_MCU32_PPS
+/* Function :  PORTS_ExistsPortsWrite_MCU32
 
   Summary:
-    Implements MCU32_PPS variant of PLIB_PORTS_ExistsPortsWrite
+    Implements MCU32 variant of PLIB_PORTS_ExistsPortsWrite
 
   Description:
-    This template implements the MCU32_PPS variant of the PLIB_PORTS_ExistsPortsWrite function.
+    This template implements the MCU32 variant of the PLIB_PORTS_ExistsPortsWrite function.
 */
 
-PLIB_TEMPLATE bool PORTS_ExistsPortsWrite_MCU32_PPS( PORTS_MODULE_ID index )
+PLIB_TEMPLATE bool PORTS_ExistsPortsWrite_MCU32( PORTS_MODULE_ID index )
 {
     return true;
 }
 
 
-#endif /*_PORTS_PORTSWRITE_MCU32_PPS_H*/
+#endif /*_PORTS_PORTSWRITE_MCU32_H*/
 
 /******************************************************************************
  End of File

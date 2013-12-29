@@ -457,7 +457,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #else
 
-    #define _DRV_TMR_VALUE_GET(arg)                             (arg)
+    #define _DRV_TMR_VALUE_GET(arg)                             arg
 
 #endif
 
@@ -485,7 +485,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #else
 
-    #define _DRV_TMR_CLOCK_SOURCE_GET(arg)                      (arg)
+    #define _DRV_TMR_CLOCK_SOURCE_GET(arg)                      arg
 
 #endif
 
@@ -513,7 +513,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #else
 
-    #define _DRV_TMR_PRESCALE_GET(arg)                          (arg)
+    #define _DRV_TMR_PRESCALE_GET(arg)                          arg
 
 #endif
 
@@ -541,7 +541,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #else
 
-    #define _DRV_TMR_SOURCE_EDGE_GET(arg)                       (arg)
+    #define _DRV_TMR_SOURCE_EDGE_GET(arg)                       arg
 
 #endif
 
@@ -569,7 +569,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #else
 
-    #define _DRV_TMR_POSTSCALE_GET(arg)                         (arg)
+    #define _DRV_TMR_POSTSCALE_GET(arg)                         arg
 
 #endif
 
@@ -597,7 +597,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #else
 
-    #define _DRV_TMR_POWER_STATE_GET(arg)                         (arg)
+    #define _DRV_TMR_POWER_STATE_GET(arg)                         arg
 
 #endif
 

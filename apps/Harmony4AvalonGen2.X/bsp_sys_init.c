@@ -63,7 +63,8 @@ void BSP_Initialize(void )
     // VIDB: Pin 7 (Osc2, RA3)
     // VIDC: Pin 8 (RB4)
     // VIDS: Pin 9 (RA4)
-                                       
+
+    //PLIB_PORTS_DirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_A, VIDA );
     PLIB_PORTS_PinDirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_A, VIDA );
     PLIB_PORTS_PinDirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_A, VIDB );
     PLIB_PORTS_PinDirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_B, VIDC );
@@ -72,11 +73,13 @@ void BSP_Initialize(void )
     PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDA );
     PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDB );
     PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_B, VIDC );
-    PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDS );
+    PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDS);
 
     // pulse VIDS
+    PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDS );
     PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDS);
     PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDS );
+    PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDS);
 
     // Set SPI (both ports)
     //
@@ -89,33 +92,57 @@ void BSP_Initialize(void )
     // SDO2 is on Pin4/RB3 (no SDI)
     // SS2  is on Pin3/RB2
 
-
-    /* Remap the SPI1 pin */
-    SYS_PORTS_RemapInput(PORTS_ID_0, INPUT_FUNC_SDI1, INPUT_PIN_RPB1);
-
-    /* Remap the SPI2 pins */
-    SYS_PORTS_RemapOutput(PORTS_ID_0, OTPUT_FUNC_SDO2, OUTPUT_PIN_RPB3); // pin 4
-    SYS_PORTS_RemapOutput(PORTS_ID_0, OTPUT_FUNC_SS2, OUTPUT_PIN_RPB2);  // pin 3
-
     /* set priority for SPI interrupt source */
-    SYS_INT_VectorPrioritySet(INT_VECTOR_SPI2_TX, INT_PRIORITY_LEVEL3);
-    SYS_INT_VectorPrioritySet(INT_VECTOR_SPI1_RX, INT_PRIORITY_LEVEL3);
+    //SYS_INT_VectorPrioritySet(INT_VECTOR_SPI2_TX, INT_PRIORITY_LEVEL3);
+    //SYS_INT_VectorPrioritySet(INT_VECTOR_SPI1_RX, INT_PRIORITY_LEVEL3);
 
     /* set sub-priority for SPI interrupt source */
-    SYS_INT_VectorSubprioritySet(INT_VECTOR_SPI2_TX, INT_SUBPRIORITY_LEVEL3);
-    SYS_INT_VectorSubprioritySet(INT_VECTOR_SPI1_RX, INT_SUBPRIORITY_LEVEL3);
+    //SYS_INT_VectorSubprioritySet(INT_VECTOR_SPI2_TX, INT_SUBPRIORITY_LEVEL3);
+    //SYS_INT_VectorSubprioritySet(INT_VECTOR_SPI1_RX, INT_SUBPRIORITY_LEVEL3);
     
 }
 
+// Input delta can be from 0 to 64. Every increment is +3.45 mV.
 void BSP_SetVoltage(BSP_VOLTAGE delta)
 {
+    BSP_VOLTAGE shifter = 1;
+    if (shifter & delta)
+        PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDA);
+    else
+        PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDA );
+    shifter <<= 1; // shift by one to the left
+    if (shifter & delta)
+        PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDB);
+    else
+        PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDB );
+    shifter <<= 1; // shift by one to the left
+    if (shifter & delta)
+        PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_B, VIDC);
+    else
+        PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_B, VIDC );
+    shifter <<= 1; // shift by one to the left
 
-    /* TBD */
-    //PLIB_PORTS_PinWrite ( PORTS_ID_0 ,
-    //                     PORT_CHANNEL_D ,
-    //                     led,
-    //                     1 );
+    // latch first three bits (falling VIDS latches)
+    PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDS );
 
+    // now continue with higher 3 bits
+    if (shifter & delta)
+        PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDA);
+    else
+        PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDA );
+    shifter <<= 1; // shift by one to the left
+    if (shifter & delta)
+        PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDB);
+    else
+        PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDB);
+    shifter <<= 1; // shift by one to the left
+    if (shifter & delta)
+        PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_B, VIDC);
+    else
+        PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_B, VIDC);
+
+    // latch higher 3 bits (rising VIDS does this)
+    PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDS);
 }
 
 

@@ -38,7 +38,6 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 
 #include "app.h"
 
-
 // ****************************************************************************
 // ****************************************************************************
 // Section: Configuration Bits
@@ -54,12 +53,41 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
                                                   Fail Safe Clock Monitoring Enable
  Peripheral Clock Divisor (FPBDIV)              = Divide by 2
  */
-// TODO configure the correct confiugraiton fuse settings for your part
-#pragma config FPLLODIV = DIV_1, FPLLMUL = MUL_20, FPLLIDIV = DIV_2, FWDTEN = OFF, FCKSM = CSECME, FPBDIV = DIV_1
-#pragma config OSCIOFNC = ON, POSCMOD = XT, FSOSCEN = ON, FNOSC = PRIPLL
-#pragma config CP = OFF, BWP = OFF, PWP = OFF
-#pragma config ICESEL = ICS_PGx2
+/* SYSCLK = 80 MHz (8MHz Crystal / FPLLIDIV * FPLLMUL / FPLLODIV)
+   PBCLK = 80 MHz (SYSCLK / FPBDIV) */
+// DEVCFG3
+// USERID = No Setting
+#pragma config PMDL1WAY = ON            // Peripheral Module Disable Configuration (Allow only one reconfiguration)
+#pragma config IOL1WAY = ON             // Peripheral Pin Select Configuration (Allow only one reconfiguration)
+#pragma config FUSBIDIO = ON            // USB USID Selection (Controlled by the USB Module)
+#pragma config FVBUSONIO = ON           // USB VBUS ON Selection (Controlled by USB Module)
 
+// DEVCFG2
+#pragma config FPLLIDIV = DIV_2         // PLL Input Divider (3x Divider)
+#pragma config FPLLMUL = MUL_20         // PLL Multiplier (15x Multiplier)
+#pragma config FPLLODIV = DIV_256       // System PLL Output Clock Divider (PLL Divide by 256)
+
+// DEVCFG1
+#pragma config FNOSC = FRCDIV           // Oscillator Selection Bits (Fast RC Osc w/Div-by-N (FRCDIV))
+#pragma config FSOSCEN = OFF            // Secondary Oscillator Enable (Disabled)
+#pragma config IESO = OFF               // Internal/External Switch Over (Disabled)
+#pragma config POSCMOD = OFF            // Primary Oscillator Configuration (Primary osc disabled)
+#pragma config OSCIOFNC = OFF           // CLKO Output Signal Active on the OSCO Pin (Disabled)
+#pragma config FPBDIV = DIV_8           // Peripheral Clock Divisor (Pb_Clk is Sys_Clk/8)
+#pragma config FCKSM = CSDCMD           // Clock Switching and Monitor Selection (Clock Switch Disable, FSCM Disabled)
+#pragma config WDTPS = PS1048576        // Watchdog Timer Postscaler (1:1048576)
+#pragma config WINDIS = OFF             // Watchdog Timer Window Enable (Watchdog Timer is in Non-Window Mode)
+#pragma config FWDTEN = OFF             // Watchdog Timer Enable (WDT Disabled (SWDTEN Bit Controls))
+#pragma config FWDTWINSZ = WISZ_25      // Watchdog Timer Window Size (Window Size is 25%)
+
+// DEVCFG0
+#pragma config JTAGEN = ON              // JTAG Enable (JTAG Port Enabled)
+#pragma config ICESEL = ICS_PGx2        // ICE/ICD Comm Channel Select (Communicate on PGEC2/PGED2)
+#pragma config PWP = OFF                // Program Flash Write Protect (Disable)
+#pragma config BWP = OFF                // Boot Flash Write Protect bit (Protection Disabled)
+#pragma config CP = OFF                 // Code Protect (Protection Disabled)
+
+#define SYS_FREQUENCY 80000000L
 
 // *****************************************************************************
 // *****************************************************************************
@@ -99,6 +127,8 @@ DRV_SPI_INIT drvSPIInit1 =
 
     /* SPI Communication Width */
     .commWidth = SPI_COMMUNICATION_WIDTH_8BITS,
+
+    .dataDirection = HALF_DUPLEX,
 
     /* SPI Baud Rate Value */
     .baudRate = 10000000,
@@ -146,6 +176,8 @@ DRV_SPI_INIT drvSPIInit2 =
     /* SPI Communication Width */
     .commWidth = SPI_COMMUNICATION_WIDTH_8BITS,
 
+    .dataDirection = HALF_DUPLEX,
+
     /* SPI Baud Rate Value */
     .baudRate = 10000000,
 
@@ -159,7 +191,7 @@ DRV_SPI_INIT drvSPIInit2 =
     .txInterruptMode = SPI_FIFO_INTERRUPT_WHEN_TRANSMISSION_IS_COMPLETE,
 
     /* SPI Clock mode */
-    .clockMode = DRV_SPI_CLOCK_MODE_IDLE_HIGH_EDGE_RISE,
+    .clockMode = DRV_SPI_CLOCK_MODE_IDLE_LOW_EDGE_RISE,
 
     /* SPI Input Sample Phase Selection. NOTE: this is for input, but this module is output only */
     .inputSamplePhase = SPI_INPUT_SAMPLING_PHASE_AT_END,
@@ -257,6 +289,25 @@ DRV_USB_INIT usbCDInitData =
     (void*)NULL
 };
 
+SYS_MODULE_OBJ TimerObjectHandle;
+SYS_MODULE_OBJ TimerDriverHandle;
+SYS_TMR_INIT TimerInitConfig;
+
+#define ONE_SECOND 31250
+#define TEN_SECONDS 10
+
+DRV_TMR_INIT   timerInit =
+{
+    .tmrId = TMR_ID_2,
+    .timerPeriod = ONE_SECOND,
+    .clockSource = TMR_CLOCK_SOURCE_PERIPHERAL_CLOCK,
+    .interruptSource = INT_SOURCE_TIMER_3,
+    .prescale = TMR_PRESCALE_VALUE_256,
+    .postscale = TMR_POSTSCALE_NOT_SUPPORTED,
+    .sourceEdge = TMR_CLOCK_SOURCE_EDGE_NONE,
+    .moduleInit.value = SYS_MODULE_POWER_RUN_FULL,
+};
+
 
 // ****************************************************************************
 // ****************************************************************************
@@ -310,23 +361,58 @@ DRV_USB_INIT usbCDInitData =
     for the specific configuration of an application.
  */
 
+bool TickInit();
+void TimerHandler();
+
+extern APP_DATA appObject;
+
 void SYS_Initialize ( void* data )
 {
+    /*Refer to the C32 peripheral library documentation for more
+    information on the SYTEMConfig function.
 
-    /* Initialize the BSP */
+    This function sets the PB divider, the Flash Wait States, and the DRM
+    /wait states to the optimum value.  It also enables the cacheability for
+    the K0 segment.  It could has side effects of possibly alter the pre-fetch
+    buffer and cache.  It sets the RAM wait states to 0.  Other than
+    the SYS_FREQ, this takes these parameters.  The top 3 may be '|'ed
+    together:*/
+
+    SYSTEMConfigPerformance(SYS_FREQUENCY);
+
+
+    /* Initialize the BSP (Power Supply Voltage and SPI pins and interrupts) */
     BSP_Initialize ( );
 
-    // TODO perform inialization of the system
-
     // initialize the timer that manages the tick counter
-    //TickInit();
+    TickInit();
 
-    //Initialize SPI
-    DRV_SPI_Initialize ( DRV_SPI_INDEX_0, (SYS_MODULE_INIT *)&drvSPIInit1 );
-    DRV_SPI_Initialize ( DRV_SPI_INDEX_1, (SYS_MODULE_INIT *)&drvSPIInit2 );
+    //Initialize input SPI
+    appObject.spiReport = DRV_SPI_Initialize ( DRV_SPI_INDEX_0, (SYS_MODULE_INIT *)&drvSPIInit1 );
+
+    /* Remap the SPI1 pin */
+    PLIB_SPI_PinEnable(SPI_ID_1, SPI_PIN_DATA_IN);
+    SYS_PORTS_RemapInput(PORTS_ID_0, INPUT_FUNC_SDI1, INPUT_PIN_RPB1);
+
+    // Initialize output SPI
+    appObject.spiConfig = DRV_SPI_Initialize ( DRV_SPI_INDEX_0, (SYS_MODULE_INIT *)&drvSPIInit2 );
+
+    /* Remap the SPI2 pins */
+    PLIB_SPI_PinEnable(SPI_ID_2, SPI_PIN_DATA_OUT);
+    SYS_PORTS_RemapOutput(PORTS_ID_0, OTPUT_FUNC_SDO2, OUTPUT_PIN_RPB3); // pin 4
+    PLIB_PORTS_PinDirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_B, PORTS_BIT_POS_3);
+
+    // Set Pin for clock
+    PLIB_PORTS_PinDirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_B, PORTS_BIT_POS_15);
+
+    /* Slave select should be managed by us*/
+    //SYS_PORTS_RemapOutput(PORTS_ID_0, OTPUT_FUNC_SS2, OUTPUT_PIN_RPB2);  // pin 3
+    //PLIB_SPI_PinEnable(SPI_ID_2, SPI_PIN_DATA_IN);
+    PLIB_PORTS_PinDirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_B, PORTS_BIT_POS_2);
+    PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_B, PORTS_BIT_POS_2);
 
     //Initialize the USB device layer (this also calls DRV_USB_Initialize)
-    USB_DEVICE_Initialize(  0, (SYS_MODULE_INIT *)&usbCDInitData  );
+    //USB_DEVICE_Initialize(  0, (SYS_MODULE_INIT *)&usbCDInitData  );
 
     //Interrupt
     SYS_INT_Initialize();
@@ -334,6 +420,43 @@ void SYS_Initialize ( void* data )
     /* Initialize the Application */
     APP_Initialize ( );
 
+}
+
+bool TickInit()
+{
+    TimerInitConfig.moduleInit.value = SYS_MODULE_POWER_RUN_FULL;
+    TimerInitConfig.drvIndex = DRV_TMR_INDEX_0;
+    TimerInitConfig.alarmPeriod = TEN_SECONDS; // 10 one-second cycles
+
+    TimerDriverHandle = DRV_TMR_Initialize(SYS_TMR_INDEX_0, (SYS_MODULE_INIT*)&timerInit);
+
+    if (TimerDriverHandle == SYS_MODULE_OBJ_INVALID){
+        return false;
+    }
+
+    TimerObjectHandle = SYS_TMR_Initialize(SYS_TMR_INDEX_0, (SYS_MODULE_INIT*)&TimerInitConfig);
+
+    if (TimerObjectHandle == SYS_MODULE_OBJ_INVALID){
+        return false;
+    }
+
+    TimerObjectHandle = SYS_TMR_CallbackPeriodic (1, &TimerHandler);
+
+    return true;
+}
+
+
+// *****************************************************************************
+// *****************************************************************************
+// Section: Interrupt Service Routine
+// *****************************************************************************
+// *****************************************************************************
+
+extern void BSP_SetVoltage(BSP_VOLTAGE delta);
+
+void TimerHandler(void)
+{
+    BSP_SetVoltage(1);
 }
 
 

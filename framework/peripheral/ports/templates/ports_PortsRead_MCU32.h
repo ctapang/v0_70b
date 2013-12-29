@@ -51,7 +51,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 /* Routines available for accessing VREGS, MASKS, POS, LEN are 
 
   VREGs: 
-    _PORTS_READ_B_VREG(index)
+    _PORTS_READ_A_VREG(index)
     _PORTS_PIN_MODE_VREG(index)
 
   MASKs: 

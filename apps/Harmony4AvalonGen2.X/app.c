@@ -68,8 +68,10 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 */
 APP_DATA appObject = 
 {
-    Initializing
-
+    Initializing,
+    NULL,
+    NULL,
+    NULL
 };
 
 // *****************************************************************************
@@ -118,14 +120,6 @@ APP_DRV_OBJECTS appDrvObject;
 
 void APP_Initialize ( void )
 {
-    // First, disable all interrupts
-    unsigned long ulStatus;
-
-    /* Disable interrupts - not taskDISABLE_INTERRUPTS() cannot be used here as
-    FreeRTOS does not globally disable interrupt. */
-    ulStatus = _CP0_GET_STATUS();
-    _CP0_SET_STATUS( ulStatus & ~hwGLOBAL_INTERRUPT_BIT );
-
 }
 
 /******************************************************************************

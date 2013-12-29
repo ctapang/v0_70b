@@ -30,7 +30,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include "tmr/src/sys_tmr_local.h"
-#include "system/ports/sys_ports.h"
+//#include "system/ports/sys_ports.h"
 #include "system/int/sys_int_mapping.h"
 #include "peripheral/ports/plib_ports.h"
 #include "peripheral/int/plib_int.h"
