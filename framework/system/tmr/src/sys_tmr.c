@@ -463,6 +463,9 @@ void SYS_TMR_Tasks ( SYS_MODULE_OBJ object )
                 /* Get the timer operating frequency to calculate the count value for the alarm */
                 sSysTmrObject.sysTmrOperatingFreq = DRV_TMR_OperatingFrequencyGet (sSysTmrObject.clientHandle);
 
+                if (sSysTmrObject.sysTmrOperatingFreq <= 0L)
+                    break; // FIXME: this should be an exception
+
                 /* Get the period value */
                 period = (uint32_t) ( ( sSysTmrObject.alarmPeriod * sSysTmrObject.sysTmrOperatingFreq )/1000 );
 

@@ -27,7 +27,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 PROJECTNAME=Harmony4AvalonGen2.X
 
 # Active Configuration
-DEFAULTCONF=CondoUnit
+DEFAULTCONF=default
 CONF=${DEFAULTCONF}
 
 # All Configurations

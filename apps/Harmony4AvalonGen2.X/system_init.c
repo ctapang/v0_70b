@@ -95,118 +95,6 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 // *****************************************************************************
 // *****************************************************************************
 
-// *****************************************************************************
-/* SPI Driver Initialization Data
-
-  Summary:
-    Defines the SPI driver's initialization data
-
-  Description
-    This structure defines the SPI driver's initialization data, passed into
-    the driver's initialization routine ("DRV_SPI_Initialize") by the
-    system's ("SYS_Initialize") routine.
-
-  Remarks:
-    None.
-*/
-
-// SPI1 is set to slave, receive-only mode.
-DRV_SPI_INIT drvSPIInit1 =
-{
-    /* Requested power state */
-    .moduleInit.sys.powerState = SYS_MODULE_POWER_RUN_FULL,
-
-    /* Identifies USART hardware module (PLIB-level) ID */
-    .spiId = SPI_ID_1,
-
-    /* Operation Modes of the SPI driver */
-    .spiMode = DRV_SPI_MODE_SLAVE,
-
-    /* SPI Protocol Type */
-    .spiProtocolType = DRV_SPI_PROTOCOL_TYPE_STANDARD,
-
-    /* SPI Communication Width */
-    .commWidth = SPI_COMMUNICATION_WIDTH_8BITS,
-
-    .dataDirection = HALF_DUPLEX,
-
-    /* SPI Baud Rate Value */
-    .baudRate = 10000000,
-
-    /* SPI Buffer Type */
-    .bufferType  = DRV_SPI_BUFFER_TYPE_STANDARD,
-
-    /* FIFO RX Interrupt Mode */
-    .rxInterruptMode = SPI_FIFO_INTERRUPT_WHEN_RECEIVE_BUFFER_IS_NOT_EMPTY,
-
-    /* FIFO TX Interrupt Mode */
-    .txInterruptMode = SPI_FIFO_INTERRUPT_WHEN_TRANSMISSION_IS_COMPLETE,
-
-    /* SPI Clock mode */
-    .clockMode = DRV_SPI_CLOCK_MODE_IDLE_HIGH_EDGE_FALL,
-
-    /* SPI Input Sample Phase Selection. NOTE: ignored in this case (in slave mode) */
-    .inputSamplePhase = SPI_INPUT_SAMPLING_PHASE_AT_END,
-
-    /* Transmit Interrupt Source for SPI module NOTE: no transmit */
-    .txInterruptSource = INT_SOURCE_SPI_1_TRANSMIT,
-
-    /* Receive Interrupt Source for SPI module */
-    .rxInterruptSource = INT_SOURCE_SPI_1_RECEIVE,
-
-    /* Error Interrupt Source for SPI module */
-    .errInterruptSource = INT_SOURCE_SPI_1_ERROR,
-};
-
-// SPI2 is set in master transmit-only mode.
-DRV_SPI_INIT drvSPIInit2 =
-{
-    /* Requested power state */
-    .moduleInit.sys.powerState = SYS_MODULE_POWER_RUN_FULL,
-
-    /* Identifies USART hardware module (PLIB-level) ID */
-    .spiId = SPI_ID_2,
-
-    /* Operation Modes of the SPI driver */
-    .spiMode = DRV_SPI_MODE_MASTER,
-
-    /* SPI Protocol Type */
-    .spiProtocolType = DRV_SPI_PROTOCOL_TYPE_STANDARD,
-
-    /* SPI Communication Width */
-    .commWidth = SPI_COMMUNICATION_WIDTH_8BITS,
-
-    .dataDirection = HALF_DUPLEX,
-
-    /* SPI Baud Rate Value */
-    .baudRate = 10000000,
-
-    /* SPI Buffer Type */
-    .bufferType  = DRV_SPI_BUFFER_TYPE_STANDARD,
-
-    /* FIFO RX Interrupt Mode */
-    .rxInterruptMode = SPI_FIFO_INTERRUPT_WHEN_RECEIVE_BUFFER_IS_NOT_EMPTY,
-
-    /* FIFO TX Interrupt Mode */
-    .txInterruptMode = SPI_FIFO_INTERRUPT_WHEN_TRANSMISSION_IS_COMPLETE,
-
-    /* SPI Clock mode */
-    .clockMode = DRV_SPI_CLOCK_MODE_IDLE_LOW_EDGE_RISE,
-
-    /* SPI Input Sample Phase Selection. NOTE: this is for input, but this module is output only */
-    .inputSamplePhase = SPI_INPUT_SAMPLING_PHASE_AT_END,
-
-    /* Transmit Interrupt Source for SPI module */
-    .txInterruptSource = INT_SOURCE_SPI_2_TRANSMIT,
-
-    /* Receive Interrupt Source for SPI module. NOTE: no receive */
-    .rxInterruptSource = INT_SOURCE_SPI_2_RECEIVE,
-
-    /* Error Interrupt Source for SPI module */
-    .errInterruptSource = INT_SOURCE_SPI_2_ERROR,
-};
-
-
 
 // *****************************************************************************
 /* USB Device layer Initialization Data
@@ -293,20 +181,55 @@ SYS_MODULE_OBJ TimerObjectHandle;
 SYS_MODULE_OBJ TimerDriverHandle;
 SYS_TMR_INIT TimerInitConfig;
 
-#define ONE_SECOND 31250
+#define ONE_SECOND 312500
 #define TEN_SECONDS 10
 
 DRV_TMR_INIT   timerInit =
 {
-    .tmrId = TMR_ID_2,
-    .timerPeriod = ONE_SECOND,
-    .clockSource = TMR_CLOCK_SOURCE_PERIPHERAL_CLOCK,
-    .interruptSource = INT_SOURCE_TIMER_3,
-    .prescale = TMR_PRESCALE_VALUE_256,
-    .postscale = TMR_POSTSCALE_NOT_SUPPORTED,
-    .sourceEdge = TMR_CLOCK_SOURCE_EDGE_NONE,
     .moduleInit.value = SYS_MODULE_POWER_RUN_FULL,
+    .tmrId = TMR_ID_2,
+    .clockSource = TMR_CLOCK_SOURCE_PERIPHERAL_CLOCK,
+    .timerPeriod = ONE_SECOND,
+    .prescale = TMR_PRESCALE_VALUE_256,
+    .sourceEdge = TMR_CLOCK_SOURCE_EDGE_NONE,
+    .postscale = TMR_POSTSCALE_NOT_SUPPORTED,
+    .syncMode = DRV_TMR_SYNC_MODE_SYNCHRONOUS_INTERNAL,
+    .interruptSource = INT_SOURCE_TIMER_3, // timer 2 and timer 3 are joined together
 };
+
+// "PRIVATE" methods
+
+/*********************************************************************
+ * Function:        bool SYS_TICK_Initialize(uint32_t sysClock, uint32_t ticksPerSec)
+ *
+ * PreCondition:    None
+ *
+ * Input:           sysClock    - system clock frequency, Hz
+ *                  ticksPerSec - number of ticks to generate per second
+ *
+ * Output:          true if initialization succeeded,
+ *                  false otherwise
+ *
+ * Side Effects:    None
+ *
+ * Overview:        Initializes the system tick counter.
+ *
+ * Note:            Normal value for ticksPerSec should be 100 (i.e. interrupt every 10 ms).
+ ********************************************************************/
+bool SYS_TICK_Initialize(INT_VECTOR vector, DRV_TMR_INIT *drvInit)
+{
+    SYS_INT_SourceDisable(drvInit->interruptSource);
+
+    SYS_INT_SourceStatusClear(drvInit->interruptSource);
+
+    SYS_INT_VectorPrioritySet(vector, INT_PRIORITY_LEVEL5);
+    SYS_INT_VectorSubprioritySet(vector, INT_SUBPRIORITY_LEVEL1);
+
+    SYS_INT_SourceStatusClear(drvInit->interruptSource);
+
+    return true;
+
+}//SYS_TICK_Initialize
 
 
 // ****************************************************************************
@@ -380,6 +303,14 @@ void SYS_Initialize ( void* data )
 
     SYSTEMConfigPerformance(SYS_FREQUENCY);
 
+    //Initialize the USB device layer (this also calls DRV_USB_Initialize)
+    //USB_DEVICE_Initialize(  0, (SYS_MODULE_INIT *)&usbCDInitData  );
+
+    //Interrupt
+    SYS_INT_Initialize();
+
+    // Disable interrrupts for now
+    //SYS_INT_Disable();
 
     /* Initialize the BSP (Power Supply Voltage and SPI pins and interrupts) */
     BSP_Initialize ( );
@@ -387,46 +318,20 @@ void SYS_Initialize ( void* data )
     // initialize the timer that manages the tick counter
     TickInit();
 
-    //Initialize input SPI
-    appObject.spiReport = DRV_SPI_Initialize ( DRV_SPI_INDEX_0, (SYS_MODULE_INIT *)&drvSPIInit1 );
-
-    /* Remap the SPI1 pin */
-    PLIB_SPI_PinEnable(SPI_ID_1, SPI_PIN_DATA_IN);
-    SYS_PORTS_RemapInput(PORTS_ID_0, INPUT_FUNC_SDI1, INPUT_PIN_RPB1);
-
-    // Initialize output SPI
-    appObject.spiConfig = DRV_SPI_Initialize ( DRV_SPI_INDEX_0, (SYS_MODULE_INIT *)&drvSPIInit2 );
-
-    /* Remap the SPI2 pins */
-    PLIB_SPI_PinEnable(SPI_ID_2, SPI_PIN_DATA_OUT);
-    SYS_PORTS_RemapOutput(PORTS_ID_0, OTPUT_FUNC_SDO2, OUTPUT_PIN_RPB3); // pin 4
-    PLIB_PORTS_PinDirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_B, PORTS_BIT_POS_3);
-
-    // Set Pin for clock
-    PLIB_PORTS_PinDirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_B, PORTS_BIT_POS_15);
-
-    /* Slave select should be managed by us*/
-    //SYS_PORTS_RemapOutput(PORTS_ID_0, OTPUT_FUNC_SS2, OUTPUT_PIN_RPB2);  // pin 3
-    //PLIB_SPI_PinEnable(SPI_ID_2, SPI_PIN_DATA_IN);
-    PLIB_PORTS_PinDirectionOutputSet( PORTS_ID_0, PORT_CHANNEL_B, PORTS_BIT_POS_2);
-    PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_B, PORTS_BIT_POS_2);
-
-    //Initialize the USB device layer (this also calls DRV_USB_Initialize)
-    //USB_DEVICE_Initialize(  0, (SYS_MODULE_INIT *)&usbCDInitData  );
-
-    //Interrupt
-    SYS_INT_Initialize();
-
     /* Initialize the Application */
     APP_Initialize ( );
 
+    /* Enable all defined interrupts */
+    SYS_INT_Enable();
 }
 
 bool TickInit()
 {
     TimerInitConfig.moduleInit.value = SYS_MODULE_POWER_RUN_FULL;
     TimerInitConfig.drvIndex = DRV_TMR_INDEX_0;
-    TimerInitConfig.alarmPeriod = TEN_SECONDS; // 10 one-second cycles
+    TimerInitConfig.alarmPeriod = TEN_SECONDS; // ten seconds
+
+    clkObject.peripheralClock = SYS_FREQUENCY;
 
     TimerDriverHandle = DRV_TMR_Initialize(SYS_TMR_INDEX_0, (SYS_MODULE_INIT*)&timerInit);
 
@@ -440,7 +345,14 @@ bool TickInit()
         return false;
     }
 
-    TimerObjectHandle = SYS_TMR_CallbackPeriodic (1, &TimerHandler);
+    TimerObjectHandle = SYS_TMR_CallbackPeriodic (TEN_SECONDS, &TimerHandler);
+
+
+     /* set priority for Timer 3 interrupt source */
+    SYS_INT_VectorPrioritySet(INT_VECTOR_T3, INT_PRIORITY_LEVEL5);
+
+    /* set sub-priority for Timer 3 interrupt source */
+    SYS_INT_VectorSubprioritySet(INT_VECTOR_T3, INT_SUBPRIORITY_LEVEL3);
 
     return true;
 }

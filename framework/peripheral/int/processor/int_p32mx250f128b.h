@@ -77,7 +77,7 @@ typedef enum {
 
 } INT_SUBPRIORITY_LEVEL;
 
-typedef enum {
+    typedef enum {
 
     INT_SOURCE_TIMER_CORE = 0,
     INT_SOURCE_SOFTWARE_0 = 1,

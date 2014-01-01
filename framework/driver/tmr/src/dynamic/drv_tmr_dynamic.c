@@ -1748,6 +1748,9 @@ uint32_t DRV_TMR_OperatingFrequencyGet( DRV_HANDLE handle )
     /* Get the Base frequency from the SYS CLK module */
     tmrBaseFreq = SYS_CLK_ClockFrequencyGet( CLK_PERIPHERAL );
 
+    if (tmrBaseFreq <= 0)
+        return 0;
+
     /* PreScale Used */
     if( PLIB_TMR_ExistsPrescale( _DRV_TMR_PERIPHERAL_ID_GET( gDrvTMRObj[dObj].tmrId ) ) )
     {

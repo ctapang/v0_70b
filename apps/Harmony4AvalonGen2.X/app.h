@@ -219,7 +219,7 @@ void SYS_Tasks ( void );
 
 extern APP_DRV_OBJECTS appDrvObject;
 
-extern APP_DATA appData;
+extern APP_DATA appObject;
 
 #endif /* _APP_HEADER_H */
 

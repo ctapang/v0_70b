@@ -41,10 +41,24 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #include <sys/attribs.h>
 #include "app.h"
 
+int _intCounter = 0;
+
+void __attribute__((interrupt(ipl5), vector(_TIMER_3_VECTOR)))
+Timer2Handler(void)
+{
+    /* Clear the interrupt flag */
+    PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_TIMER_3);
+    _intCounter++;
+}
+
+void __attribute__((interrupt(ipl5)))
+_DefaultInterrupt(void)
+{
+}
+
 
 /*******************************************************************************
  End of File
  */
 
-// TODO Add your interrupt handlers here
 
