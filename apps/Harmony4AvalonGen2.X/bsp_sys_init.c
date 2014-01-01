@@ -238,9 +238,12 @@ void BSP_Initialize(void )
 }
 
 // Input delta can be from 0 to 64. Every increment is +3.45 mV.
-void BSP_SetVoltage(BSP_VOLTAGE delta)
+void BSP_SetVoltage(char delta)
 {
-    BSP_VOLTAGE shifter = 1;
+    if ((delta < 0) || (delta > 63))
+        return; // FIXME: This should be an exception
+    
+    char shifter = 1;
     if (shifter & delta)
         PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDA);
     else

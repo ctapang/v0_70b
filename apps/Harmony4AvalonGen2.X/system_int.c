@@ -46,9 +46,10 @@ int _intCounter = 0;
 void __attribute__((interrupt(ipl5), vector(_TIMER_3_VECTOR)))
 Timer2Handler(void)
 {
-    /* Clear the interrupt flag */
-    PLIB_INT_SourceFlagClear(INT_ID_0, INT_SOURCE_TIMER_3);
     _intCounter++;
+
+    // call the driver tasks routine
+    DRV_TMR_Tasks(appObject.TimerObjectHandle);
 }
 
 void __attribute__((interrupt(ipl5)))

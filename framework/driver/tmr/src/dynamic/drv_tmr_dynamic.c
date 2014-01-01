@@ -250,12 +250,12 @@ static void _DRV_TMR_SyncModeControl( const TMR_MODULE_ID   plibId,
     Called.
 */
 
-static void _DRV_TMR_SetupHardware( const TMR_MODULE_ID plibId,
+ static void _DRV_TMR_SetupHardware( const TMR_MODULE_ID plibId,
                                     DRV_TMR_OBJ_HANDLE  dObj,
                                     DRV_TMR_INIT        * tmrInit )
 {
     /* Initialize the Interrupt Source */
-    _DRV_TMR_STATIC_INT_SRC( gDrvTMRObj[dObj].interruptSource = _DRV_TMR_INT_SRC_GET( tmrInit->interruptSource ) );
+    gDrvTMRObj[dObj].interruptSource = _DRV_TMR_STATIC_INT_SRC( _DRV_TMR_INT_SRC_GET( tmrInit->interruptSource ) );
 
     /* Power state initialization */
     if( PLIB_TMR_ExistsStopInIdleControl( _DRV_TMR_PERIPHERAL_ID_GET( plibId ) ) )

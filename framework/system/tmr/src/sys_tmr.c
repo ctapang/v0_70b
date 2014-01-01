@@ -467,7 +467,7 @@ void SYS_TMR_Tasks ( SYS_MODULE_OBJ object )
                     break; // FIXME: this should be an exception
 
                 /* Get the period value */
-                period = (uint32_t) ( ( sSysTmrObject.alarmPeriod * sSysTmrObject.sysTmrOperatingFreq )/1000 );
+                period = (uint32_t) ( sSysTmrObject.alarmPeriod * sSysTmrObject.sysTmrOperatingFreq );
 
                 /* Set the alarm counter value */
                 _SYS_TMR_PeriodSet ( sSysTmrObject.clientHandle, period );

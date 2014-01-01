@@ -63,17 +63,19 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #pragma config FVBUSONIO = ON           // USB VBUS ON Selection (Controlled by USB Module)
 
 // DEVCFG2
-#pragma config FPLLIDIV = DIV_2         // PLL Input Divider (3x Divider)
-#pragma config FPLLMUL = MUL_20         // PLL Multiplier (15x Multiplier)
-#pragma config FPLLODIV = DIV_256       // System PLL Output Clock Divider (PLL Divide by 256)
+#pragma config FPLLIDIV = DIV_1         // PLL Input Divider (1x Divider)
+#pragma config FPLLMUL = MUL_20         // PLL Multiplier (20x Multiplier, with an overall result of 10x)
+#pragma config FPLLODIV = DIV_2         // System PLL Output Clock Divider (PLL Divide by 2)
 
 // DEVCFG1
-#pragma config FNOSC = FRCDIV           // Oscillator Selection Bits (Fast RC Osc w/Div-by-N (FRCDIV))
+// NOTE: It seems that for the simulator, no matter what FNOSC is set to, the simulator
+// DEVCFG1 register always shows FNOSC = 0.
+#pragma config FNOSC = FRCPLL           // Oscillator Selection Bits (Fast RC Osc w/ multipliers and dividers)
 #pragma config FSOSCEN = OFF            // Secondary Oscillator Enable (Disabled)
 #pragma config IESO = OFF               // Internal/External Switch Over (Disabled)
 #pragma config POSCMOD = OFF            // Primary Oscillator Configuration (Primary osc disabled)
 #pragma config OSCIOFNC = OFF           // CLKO Output Signal Active on the OSCO Pin (Disabled)
-#pragma config FPBDIV = DIV_8           // Peripheral Clock Divisor (Pb_Clk is Sys_Clk/8)
+#pragma config FPBDIV = DIV_2           // Peripheral Clock Divisor (Pb_Clk == Sys_Clk / 2)
 #pragma config FCKSM = CSDCMD           // Clock Switching and Monitor Selection (Clock Switch Disable, FSCM Disabled)
 #pragma config WDTPS = PS1048576        // Watchdog Timer Postscaler (1:1048576)
 #pragma config WINDIS = OFF             // Watchdog Timer Window Enable (Watchdog Timer is in Non-Window Mode)
@@ -181,15 +183,40 @@ SYS_MODULE_OBJ TimerObjectHandle;
 SYS_MODULE_OBJ TimerDriverHandle;
 SYS_TMR_INIT TimerInitConfig;
 
+/*Timer load values. Values differ for each processor based on the clock settings*/
+/*The given count values are valid only if the device config registers are
+ programmed as shown below (see above for the system clock settings)*/
+// Explorer 16 Board, XTAL = 8MHz
+// PLLIDIV = 2, Freq = 4MHz
+// PLLMUL = 20, Freq = 80MHz
+// PLLODIV = 1, Freq = 80MHz
+// PBDIV = 1,   Freq = 80MHz
+// TMR Module I/P = 80MHz
+// TMR Prescaler = 1:256 = 312500Hz
+// TMR Step = 3.2uS/Count
+#define APP_TMR_1S      0x0004C4B4
+
+#define APP_TMR_500mS   0x0002625A
+
+#define APP_TMR_200mS   0x0000F424
+
+#define APP_TMR_100mS   0x00007A12
+
+#define APP_TMR_50mS	0x00003D09
+
+#define APP_TMR_10mS    0x00000C35
+
+#define APP_TMR_1mS     0x00000138
+
 #define ONE_SECOND 312500
-#define TEN_SECONDS 10
+#define TEN_SECONDS 1  // FIXME: should be 10, but something's wrong
 
 DRV_TMR_INIT   timerInit =
 {
     .moduleInit.value = SYS_MODULE_POWER_RUN_FULL,
     .tmrId = TMR_ID_2,
     .clockSource = TMR_CLOCK_SOURCE_PERIPHERAL_CLOCK,
-    .timerPeriod = ONE_SECOND,
+    .timerPeriod = ONE_SECOND, // FIXME: see alarmPeriod below (this is not really needed because sys_tmr.c calculates this from h/w.)
     .prescale = TMR_PRESCALE_VALUE_256,
     .sourceEdge = TMR_CLOCK_SOURCE_EDGE_NONE,
     .postscale = TMR_POSTSCALE_NOT_SUPPORTED,
@@ -198,39 +225,6 @@ DRV_TMR_INIT   timerInit =
 };
 
 // "PRIVATE" methods
-
-/*********************************************************************
- * Function:        bool SYS_TICK_Initialize(uint32_t sysClock, uint32_t ticksPerSec)
- *
- * PreCondition:    None
- *
- * Input:           sysClock    - system clock frequency, Hz
- *                  ticksPerSec - number of ticks to generate per second
- *
- * Output:          true if initialization succeeded,
- *                  false otherwise
- *
- * Side Effects:    None
- *
- * Overview:        Initializes the system tick counter.
- *
- * Note:            Normal value for ticksPerSec should be 100 (i.e. interrupt every 10 ms).
- ********************************************************************/
-bool SYS_TICK_Initialize(INT_VECTOR vector, DRV_TMR_INIT *drvInit)
-{
-    SYS_INT_SourceDisable(drvInit->interruptSource);
-
-    SYS_INT_SourceStatusClear(drvInit->interruptSource);
-
-    SYS_INT_VectorPrioritySet(vector, INT_PRIORITY_LEVEL5);
-    SYS_INT_VectorSubprioritySet(vector, INT_SUBPRIORITY_LEVEL1);
-
-    SYS_INT_SourceStatusClear(drvInit->interruptSource);
-
-    return true;
-
-}//SYS_TICK_Initialize
-
 
 // ****************************************************************************
 // ****************************************************************************
@@ -329,7 +323,7 @@ bool TickInit()
 {
     TimerInitConfig.moduleInit.value = SYS_MODULE_POWER_RUN_FULL;
     TimerInitConfig.drvIndex = DRV_TMR_INDEX_0;
-    TimerInitConfig.alarmPeriod = TEN_SECONDS; // ten seconds
+    TimerInitConfig.alarmPeriod = TEN_SECONDS;
 
     clkObject.peripheralClock = SYS_FREQUENCY;
 
@@ -345,6 +339,7 @@ bool TickInit()
         return false;
     }
 
+    // The first param must be a multiple of TimerInitConfig.alarmPeriod (see above).
     TimerObjectHandle = SYS_TMR_CallbackPeriodic (TEN_SECONDS, &TimerHandler);
 
 
@@ -366,9 +361,14 @@ bool TickInit()
 
 extern void BSP_SetVoltage(BSP_VOLTAGE delta);
 
+int j = 0;
+
 void TimerHandler(void)
 {
-    BSP_SetVoltage(1);
+    j++;
+    BSP_SetVoltage(j);
+    if (j > 63)
+        j = 0;
 }
 
 
