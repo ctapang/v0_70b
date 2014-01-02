@@ -63,7 +63,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #pragma config FVBUSONIO = ON           // USB VBUS ON Selection (Controlled by USB Module)
 
 // DEVCFG2
-#pragma config FPLLIDIV = DIV_1         // PLL Input Divider (1x Divider)
+#pragma config FPLLIDIV = DIV_2         // PLL Input Divider (2x Divider)
 #pragma config FPLLMUL = MUL_20         // PLL Multiplier (20x Multiplier, with an overall result of 10x)
 #pragma config FPLLODIV = DIV_2         // System PLL Output Clock Divider (PLL Divide by 2)
 
@@ -75,7 +75,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #pragma config IESO = OFF               // Internal/External Switch Over (Disabled)
 #pragma config POSCMOD = OFF            // Primary Oscillator Configuration (Primary osc disabled)
 #pragma config OSCIOFNC = OFF           // CLKO Output Signal Active on the OSCO Pin (Disabled)
-#pragma config FPBDIV = DIV_2           // Peripheral Clock Divisor (Pb_Clk == Sys_Clk / 2)
+#pragma config FPBDIV = DIV_1           // Peripheral Clock Divisor (Pb_Clk == Sys_Clk)
 #pragma config FCKSM = CSDCMD           // Clock Switching and Monitor Selection (Clock Switch Disable, FSCM Disabled)
 #pragma config WDTPS = PS1048576        // Watchdog Timer Postscaler (1:1048576)
 #pragma config WINDIS = OFF             // Watchdog Timer Window Enable (Watchdog Timer is in Non-Window Mode)
@@ -88,8 +88,6 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #pragma config PWP = OFF                // Program Flash Write Protect (Disable)
 #pragma config BWP = OFF                // Boot Flash Write Protect bit (Protection Disabled)
 #pragma config CP = OFF                 // Code Protect (Protection Disabled)
-
-#define SYS_FREQUENCY 80000000L
 
 // *****************************************************************************
 // *****************************************************************************
@@ -186,37 +184,28 @@ SYS_TMR_INIT TimerInitConfig;
 /*Timer load values. Values differ for each processor based on the clock settings*/
 /*The given count values are valid only if the device config registers are
  programmed as shown below (see above for the system clock settings)*/
-// Explorer 16 Board, XTAL = 8MHz
+// Internal highspeed RC osc = 8MHz
 // PLLIDIV = 2, Freq = 4MHz
 // PLLMUL = 20, Freq = 80MHz
-// PLLODIV = 1, Freq = 80MHz
-// PBDIV = 1,   Freq = 80MHz
-// TMR Module I/P = 80MHz
-// TMR Prescaler = 1:256 = 312500Hz
-// TMR Step = 3.2uS/Count
-#define APP_TMR_1S      0x0004C4B4
+// PLLODIV = 2, Freq = 40MHz
+// PBDIV = 1,   Freq = 40MHz
+// TMR Module I/P = 40MHz
+// TMR Prescaler = 1:256 = 156,250Hz // 312500Hz
+// TMR Step = 6.4uS/Count
+#define APP_TMR_1S      0x0002625A
 
-#define APP_TMR_500mS   0x0002625A
+#define APP_TMR_500mS   0x0001312D
 
-#define APP_TMR_200mS   0x0000F424
 
-#define APP_TMR_100mS   0x00007A12
-
-#define APP_TMR_50mS	0x00003D09
-
-#define APP_TMR_10mS    0x00000C35
-
-#define APP_TMR_1mS     0x00000138
-
-#define ONE_SECOND 312500
-#define TEN_SECONDS 1  // FIXME: should be 10, but something's wrong
+#define ONE_SECOND 156250
+#define TEN_SECONDS 10
 
 DRV_TMR_INIT   timerInit =
 {
     .moduleInit.value = SYS_MODULE_POWER_RUN_FULL,
     .tmrId = TMR_ID_2,
     .clockSource = TMR_CLOCK_SOURCE_PERIPHERAL_CLOCK,
-    .timerPeriod = ONE_SECOND, // FIXME: see alarmPeriod below (this is not really needed because sys_tmr.c calculates this from h/w.)
+    .timerPeriod = ONE_SECOND, // FIXME: see alarmPeriod below (this is not really needed because sys_tmr.c calculates this.)
     .prescale = TMR_PRESCALE_VALUE_256,
     .sourceEdge = TMR_CLOCK_SOURCE_EDGE_NONE,
     .postscale = TMR_POSTSCALE_NOT_SUPPORTED,
@@ -304,7 +293,7 @@ void SYS_Initialize ( void* data )
     SYS_INT_Initialize();
 
     // Disable interrrupts for now
-    //SYS_INT_Disable();
+    SYS_INT_Disable();
 
     /* Initialize the BSP (Power Supply Voltage and SPI pins and interrupts) */
     BSP_Initialize ( );
@@ -366,7 +355,7 @@ int j = 0;
 void TimerHandler(void)
 {
     j++;
-    BSP_SetVoltage(j);
+    //BSP_SetVoltage(j);
     if (j > 63)
         j = 0;
 }

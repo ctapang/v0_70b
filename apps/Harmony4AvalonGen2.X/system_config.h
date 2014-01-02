@@ -47,6 +47,9 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #define __PIC32MX__   1
 #define __32MX250F128B__  1
 
+// given all of the #pragma config statements in system_init.c, we get 40MHz for our clock
+#define SYS_FREQUENCY 40000000L
+
 #define hwGLOBAL_INTERRUPT_BIT			( 0x01UL )
 
 // *****************************************************************************
@@ -111,6 +114,7 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
 #define DRV_TMR_INSTANCES_NUMBER 4
 #define DRV_TMR_CLIENTS_NUMBER 4
 #define DRV_TMR_ALARM_ENABLE 1
+#define DRV_TMR_ALARM_PERIODIC 1
 
 
 // *****************************************************************************

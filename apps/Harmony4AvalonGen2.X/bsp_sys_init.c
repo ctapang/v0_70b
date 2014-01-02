@@ -160,6 +160,9 @@ DRV_SPI_INIT drvSPIInit2 =
 
 */
 
+void SpinDelay(uint16_t delay);
+void BSP_SetVoltage(char level);
+
 void BSP_Initialize(void )
 {
     // Set LM10011 Voltage Control Pins:
@@ -186,11 +189,11 @@ void BSP_Initialize(void )
     PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_B, VIDC );
     PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDS);
 
-    // pulse VIDS
-    PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDS );
-    PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDS);
-    PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDS );
-    PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDS);
+    // Allow the logic levels to stabilize on the LM10011
+    SpinDelay((uint16_t)22);
+
+    // Set voltage to about 0.9V (0.872 + level * 0.00345)
+    BSP_SetVoltage((char)9);
 
     // Set SPI (both ports)
     //
@@ -237,24 +240,25 @@ void BSP_Initialize(void )
     
 }
 
-// Input delta can be from 0 to 64. Every increment is +3.45 mV.
-void BSP_SetVoltage(char delta)
+// Input level can be from 0 to 64. Every increment is +3.45 mV.
+void BSP_SetVoltage(char level)
 {
-    if ((delta < 0) || (delta > 63))
+    SYS_ASSERT( (level >= 0) && (level < 64), "Voltage level input invalid." );
+    if ((level < 0) || (level > 63))
         return; // FIXME: This should be an exception
     
     char shifter = 1;
-    if (shifter & delta)
+    if (shifter & level)
         PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDA);
     else
         PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDA );
     shifter <<= 1; // shift by one to the left
-    if (shifter & delta)
+    if (shifter & level)
         PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDB);
     else
         PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDB );
     shifter <<= 1; // shift by one to the left
-    if (shifter & delta)
+    if (shifter & level)
         PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_B, VIDC);
     else
         PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_B, VIDC );
@@ -263,24 +267,50 @@ void BSP_SetVoltage(char delta)
     // latch first three bits (falling VIDS latches)
     PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDS );
 
+    // LM10011 needs at least 20uS hold time
+    // Let's give it plenty of time: 220 loops of 4 instructions = 880 * 25nS = 22uS.
+    // Note that if interrupts are enabled, this delay can be longer.
+    SpinDelay((uint16_t)22);
+
     // now continue with higher 3 bits
-    if (shifter & delta)
+    if (shifter & level)
         PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDA);
     else
         PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDA );
     shifter <<= 1; // shift by one to the left
-    if (shifter & delta)
+    if (shifter & level)
         PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDB);
     else
         PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_A, VIDB);
     shifter <<= 1; // shift by one to the left
-    if (shifter & delta)
+    if (shifter & level)
         PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_B, VIDC);
     else
         PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_B, VIDC);
 
     // latch higher 3 bits (rising VIDS does this)
     PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_A, VIDS);
+}
+
+
+// Delay by delay uSecs. (Input param should be in units of uSecs.)
+// Each CPU cycle lasts 25nSec, so to delay by 1uSec, we need
+// 40 cycles (1uSec = 1000 nSec = 1000 / 25 = 40 CPU cycles.
+void SpinDelay(uint16_t delay)
+{
+    SYS_ASSERT( delay < 1000, "For delays longer than 1000 uSec, use timer." );
+
+    uint16_t nanoSecsPerCycle = (1000000000L / SYS_FREQUENCY);
+
+    SYS_ASSERT( nanoSecsPerCycle > 10, "System clock maybe too high forthis." );
+
+    uint16_t loopsPerMicroSec = (1000L / nanoSecsPerCycle) / 4; // about 4 instructions per loop
+    uint16_t loops = delay * loopsPerMicroSec;
+
+    int x = 0; // just so the loop below does not get optimized out
+    uint16_t i = 0;
+    for (; i < loops; i++)
+        x++;
 }
 
 
