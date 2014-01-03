@@ -52,6 +52,32 @@ Timer2Handler(void)
     DRV_TMR_Tasks(appObject.TimerObjectHandle);
 }
 
+void __attribute__((interrupt(ipl3), vector(_SPI_2_VECTOR)))
+SPI2_Transmit_Handler(void)
+{
+    // determine what the intettupt is for (3 possiblities)
+    if (SYS_INT_SourceStatusGet(INT_SOURCE_SPI_2_TRANSMIT))
+    {
+        // SYS_INT_SourceStatusClear(INT_SOURCE_SPI_2_TRANSMIT);
+        // FIXME: Reconfigure SS0 Select pin such that it is an input pin, then
+        // physicslly connnect this pin to an output pin.
+        //PLIB_PORTS_PinClear( PORTS_ID_0, PORT_CHANNEL_B, PORTS_BIT_POS_2);
+        DRV_SPI_Tasks(appObject.spiConfig);
+        //PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_B, PORTS_BIT_POS_2);
+    }
+}
+
+void __attribute__((interrupt(ipl3), vector(_SPI_1_VECTOR)))
+SPI1_Receive_Handler(void)
+{
+    // determine what the intettupt is for (3 possiblities)
+    if (SYS_INT_SourceStatusGet(INT_SOURCE_SPI_1_RECEIVE))
+    {
+        //SYS_INT_SourceStatusClear(INT_SOURCE_SPI_1_RECEIVE);
+        DRV_SPI_Tasks(appObject.spiReport);
+    }
+}
+
 void __attribute__((interrupt(ipl5)))
 _DefaultInterrupt(void)
 {

@@ -100,8 +100,8 @@
 
 // SPI Interrupt Sources
 
-#define INT_VECTOR_SPI2_TX                      1 // FIXME
-#define INT_VECTOR_SPI1_RX                      0 // FIXME
+#define INT_VECTOR_SPI2_TX                      _SPI_2_VECTOR
+#define INT_VECTOR_SPI1_RX                      _SPI_1_VECTOR
 
 // *****************************************************************************
 /* LM10011 Voltage Control Pins.

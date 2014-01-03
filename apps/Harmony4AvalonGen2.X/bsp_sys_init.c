@@ -231,13 +231,13 @@ void BSP_Initialize(void )
     PLIB_PORTS_PinSet( PORTS_ID_0, PORT_CHANNEL_B, PORTS_BIT_POS_2);
 
     /* set priority for SPI interrupt source */
-    //SYS_INT_VectorPrioritySet(INT_VECTOR_SPI2_TX, INT_PRIORITY_LEVEL3);
-    //SYS_INT_VectorPrioritySet(INT_VECTOR_SPI1_RX, INT_PRIORITY_LEVEL3);
+    SYS_INT_VectorPrioritySet(INT_VECTOR_SPI2, INT_PRIORITY_LEVEL3);
+    SYS_INT_VectorPrioritySet(INT_VECTOR_SPI1, INT_PRIORITY_LEVEL3);
+    SYS_INT_VectorSubprioritySet(INT_VECTOR_SPI2, INT_SUBPRIORITY_LEVEL1);
+    SYS_INT_VectorSubprioritySet(INT_VECTOR_SPI1, INT_SUBPRIORITY_LEVEL1);
 
-    /* set sub-priority for SPI interrupt source */
-    //SYS_INT_VectorSubprioritySet(INT_VECTOR_SPI2_TX, INT_SUBPRIORITY_LEVEL3);
-    //SYS_INT_VectorSubprioritySet(INT_VECTOR_SPI1_RX, INT_SUBPRIORITY_LEVEL3);
-    
+    SYS_INT_SourceEnable(INT_SOURCE_SPI_1_RECEIVE);
+    SYS_INT_SourceEnable(INT_SOURCE_SPI_2_TRANSMIT);
 }
 
 // Input level can be from 0 to 64. Every increment is +3.45 mV.
